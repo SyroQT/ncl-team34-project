@@ -7,7 +7,7 @@
 Clone the repo and deal with auth
 
 ```bash
-gh repo clone newcastleuniversity-computing/team-34-project
+git clone https://github.com/newcastleuniversity-computing/team-34-project
 ```
 
 Install dependencies (make sure to create a personal env before)
