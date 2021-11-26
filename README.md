@@ -4,15 +4,15 @@
 
 ### Setting up
 
-Clone the repo
+Clone the repo and deal with auth
 
 ```bash
-git clone <url>
+git clone https://github.com/newcastleuniversity-computing/team-34-project.git
 ```
 
 Install dependencies (make sure to create a personal env before)
 
-```python
+```bash
 pip install -r requirements.tx
 ```
 
@@ -20,13 +20,16 @@ Run the app
 
 ```bash
 python app.py
+# or 
+set FLASK_APP=app.py
+flask run
+# or use your way
 ```
-
-
 
 ### Updating 
 
-TBD
+Each user should create his own branch. And merge/create pull requests from there. 
+Remeber to commit more rather then less.
 
 ## Important information
 
@@ -34,7 +37,11 @@ TBD
 
 ## Team members
 
-TODO
+Andrew Andreadis
+Bartek
+Aidan Walton
+Areesh
+Titas Janusonis
 
 ## Licence 
 
