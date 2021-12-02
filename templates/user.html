@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% block content %}
+<!-- User view and its functionality 
+written in vanila JS
+please don't write your css, js, and html code in a html file. 
+
+-->
+<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+
+<div id="main">
+
+  <!-- Map -->
+  <div id="map" class="h-screen relative z-0">
+  </div>
+  
+  <!-- Menu -->
+  <div>
+    <img
+      src="{{url_for('static', filename='src/assets/iconmonstr-menu-5.svg')}}"
+      alt="Menu"
+      id="menu"
+      class="absolute bottom-0 left-0 w-20 h-20 mb-8 ml-6"
+    />
+  </div>
+
+  <!-- Issue card -->
+  <div
+  id="card"
+  class="
+    flex-col
+    bg-white
+    shadow-md
+    px-4
+    sm:px-6
+    md:px-8
+    lg:px-10
+    py-8
+    rounded-3xl
+    w-80
+    max-w-md
+
+    absolute
+    top-1/2
+    left-1/2
+    transform
+    -translate-x-1/2 -translate-y-1/2
+    hidden
+  "
+>
+  <div id="issue-id" class="font-medium self-center text-xl sm:text-3xl text-gray-800">
+    Here goes id
+  </div>
+
+  <div id="issue-description" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
+    This is a place for a short description
+  </div>
+
+  <div id="issue-category" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
+    This place is a category
+  </div>
+
+  <!-- Botom part of the card -->
+  <div class="vertical-flex">
+      <button id="downvote" class="vote-btn">
+            
+      </button>
+
+      <button if="report-btn" class="cursor-pointer outline-none">Report</button>
+        
+      <button id="upvote" class="vote-btn">
+
+      </button>
+  </div>
+
+  </div>
+
+  <!-- This backdrop functions as a back button -->
+  <div  id="drop">
+  </div>
+</div>
+
+<style>
+  #drop {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,255,0.0);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#card{
+  pointer-events: auto;
+  opacity: 100%;
+  z-index: 10;
+}
+
+.vertical-flex{
+  margin-top: 1rem;
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#report-btn{
+  background-color: rgb(209, 109, 15);
+}
+
+#upvote{
+  background: url("{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}");
+  background-size: 2rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+#downvote{
+  background: url("{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}");
+  fill: orange;
+  background-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+
+</style>
+
+
+<script>
+  
+
+  // user file will be refactored in the future
+  function pinClickHandler(e){
+    const element = e.currentTarget;
+    const card = document.getElementById("card");
+    const drop = document.getElementById("drop");
+
+    const id = document.getElementById("issue-id");
+    const description = document.getElementById("issue-description");
+    const category = document.getElementById("issue-category");
+    const downvotes = document.getElementById("downvote");
+    const upvotes = document.getElementById("upvote");
+    
+
+    card.style.display = "flex";
+    drop.style.pointerEvents = "auto";
+
+    drop.addEventListener("click",  () => {
+      card.style.display = "none"
+      drop.style.pointerEvents = "none";
+    })
+
+    id.innerHTML = "Issue #" + element.getAttribute("data-id");
+    description.innerHTML = element.getAttribute("data-description");
+    category.innerHTML = element.getAttribute("data-category");
+    downvotes.innerHTML = element.getAttribute("data-downvotes");
+    upvotes.innerHTML = element.getAttribute("data-upvotes");
+    
+  }
+
+  // user file end
+
+  init();
+  mapboxgl.accessToken = "{{token}}";
+
+  // Map center is helixSq
+  const helixSq = [-1.6268, 54.9729];
+
+  const streetMap = "mapbox://styles/mapbox/streets-v11";
+
+  // Transforming issue data from backend
+  const pins = JSON.parse('{{ issues | tojson | safe}}');
+
+  const card = document.getElementById("card");
+
+  // Loading the map
+  var map = new mapboxgl.Map({
+    container: "map",
+    style: streetMap,
+    center: helixSq, // starting position [lng, lat]
+    zoom: 15, // starting zoom
+  });
+
+  // Pin draw and setup
+  pins.forEach((pin) => {
+
+    const el = new mapboxgl.Marker({ color: pin.color })
+      .setLngLat(pin.location)
+      .addTo(map);
+    
+      // Save the pin data for the element
+      for(let [key, value] of Object.entries(pin)){
+        el.getElement().setAttribute("data-"+ key, value);
+      }
+      // Add the event listener
+      el.getElement().addEventListener("click", pinClickHandler);
+  });
+
+</script>
+
+  {% endblock %}
+</div>
