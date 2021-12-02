@@ -1,5 +1,20 @@
 {% extends "base.html" %} {% block content %}
-<div class="bg-green-300 px-3 py-1">
-  <h2 class="text-3xl font-light text-white m-0">Beans Love Beers</h2>
-</div>
+<div id="map" class="h-screen"></div>
+<script>
+  mapboxgl.accessToken =
+    "pk.eyJ1Ijoic3lyb3F0IiwiYSI6ImNrd2d1M2dwOTBzMHoyd21vaXUwemZsZHYifQ.qMKLv7M4w6lRtfaDopK73A";
+
+  const helixSq = [-1.6268, 54.9729];
+  const streetMap = "mapbox://styles/mapbox/streets-v11";
+  const lightMap = "mapbox://styles/mapbox/light-v10";
+
+  var map = new mapboxgl.Map({
+    container: "map",
+    style: streetMap,
+    center: helixSq, // starting position [lng, lat]
+    zoom: 15, // starting zoom
+  });
+</script>
+
+<input type="button" onclick="hello()" value="run external javascript" />
 {% endblock %}
