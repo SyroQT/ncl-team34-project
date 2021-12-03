@@ -4,7 +4,6 @@ written in vanila JS
 please don't write your css, js, and html code in a html file. 
 
 -->
-<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 
 <div id="main">
 
@@ -60,13 +59,17 @@ please don't write your css, js, and html code in a html file.
 
   <!-- Botom part of the card -->
   <div class="vertical-flex">
-      <button id="downvote" class="vote-btn">
-            
-      </button>
+      <a href="#">
+        <p id="downvote"></p>
+            <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
+      </a>
 
       <button if="report-btn" class="cursor-pointer outline-none">Report</button>
         
-      <button id="upvote" class="vote-btn">
+      <a href="#">
+        <p id="upvote"></p>
+            <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
+      </a>
 
       </button>
   </div>
@@ -79,6 +82,7 @@ please don't write your css, js, and html code in a html file.
 </div>
 
 <style>
+
   #drop {
   width: 100vw;
   height: 100vh;
@@ -106,17 +110,16 @@ please don't write your css, js, and html code in a html file.
   background-color: rgb(209, 109, 15);
 }
 
-#upvote{
-  background: url("{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}");
-  background-size: 2rem;
+#upvote-svg{
+  /* #2A9D8F */
+  filter: invert(50%) sepia(81%) saturate(383%) hue-rotate(123deg) brightness(89%) contrast(83%);
   height: 2rem;
   width: 2rem;
 }
 
-#downvote{
-  background: url("{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}");
-  fill: orange;
-  background-size: 2rem;
+#downvote-svg{
+  /* #E76F51 */
+  filter: invert(61%) sepia(99%) saturate(2190%) hue-rotate(325deg) brightness(94%) contrast(93%);
   width: 2rem;
   height: 2rem;
 }
