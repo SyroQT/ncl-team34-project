@@ -5,6 +5,7 @@ please don't write your css, js, and html code in a html file.
 
 -->
 
+<!-- HMTL -->
 <div id="main">
 
   <!-- Map -->
@@ -76,14 +77,43 @@ please don't write your css, js, and html code in a html file.
 
   </div>
 
+  <div id="menu-screen">
+
+  </div>
+
   <!-- This backdrop functions as a back button -->
   <div  id="drop">
   </div>
 </div>
 
+<!-- STYLE -->
 <style>
+  /* #264653   - dark blue
+  filter: invert(22%) sepia(44%) saturate(593%) hue-rotate(152deg) brightness(85%) contrast(84%);
+  */
+  /* #2A9D8F  - green*/
+  /* #E76F51   - red*/
+  /* #F4A261   - orange*/
+  /* #E9C46A   - yellow*/
 
-  #drop {
+#menu{
+  filter: invert(22%) sepia(44%) saturate(593%) hue-rotate(152deg) brightness(85%) contrast(84%);
+}
+
+#menu-screen{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 66vw;
+  height: 100vh;
+  background-color: #264653;
+  opacity: 80%;
+  z-index: 10;
+
+  display: none;
+}
+
+#drop {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0,0,255,0.0);
@@ -111,14 +141,14 @@ please don't write your css, js, and html code in a html file.
 }
 
 #upvote-svg{
-  /* #2A9D8F */
+
   filter: invert(50%) sepia(81%) saturate(383%) hue-rotate(123deg) brightness(89%) contrast(83%);
   height: 2rem;
   width: 2rem;
 }
 
 #downvote-svg{
-  /* #E76F51 */
+
   filter: invert(61%) sepia(99%) saturate(2190%) hue-rotate(325deg) brightness(94%) contrast(93%);
   width: 2rem;
   height: 2rem;
@@ -127,7 +157,7 @@ please don't write your css, js, and html code in a html file.
 
 </style>
 
-
+<!-- JS -->
 <script>
   
 
@@ -159,6 +189,29 @@ please don't write your css, js, and html code in a html file.
     upvotes.innerHTML = element.getAttribute("data-upvotes");
     
   }
+
+  function menuClickHandler(e){
+    console.log("Menu click");
+    const menuScreen = document.getElementById("menu-screen");
+    const drop = document.getElementById("drop");
+    const menu = document.getElementById("menu");
+
+    menuScreen.style.display = "flex";
+    menu.style.display = "none";
+    drop.style.pointerEvents = "auto";
+
+    drop.addEventListener("click",  () => {
+      menuScreen.style.display = "none"
+      drop.style.pointerEvents = "none";
+      menu.style.display = "inline";
+    })
+  }
+
+  function init(){
+    console.log("Init funct");
+    const menu = document.getElementById("menu");
+    menu.addEventListener("click", menuClickHandler)
+}
 
   // user file end
 
