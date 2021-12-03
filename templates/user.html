@@ -78,7 +78,10 @@ please don't write your css, js, and html code in a html file.
   </div>
 
   <div id="menu-screen">
-
+    <ul id="menu-items">
+      <li><a href="#">About</a></li>
+      <li><a href="#">Logout</a></li>
+    </ul>
   </div>
 
   <!-- This backdrop functions as a back button -->
@@ -111,6 +114,20 @@ please don't write your css, js, and html code in a html file.
   z-index: 10;
 
   display: none;
+}
+
+#menu-items{
+  width: 100%;
+}
+#menu-items li{
+  margin: 0.5rem 0.5rem;
+  height: 4rem;
+  background-color: honeydew;
+  border-radius: 20px;
+}
+#menu-items li a{
+  font-size: 2rem;
+  margin: auto;
 }
 
 #drop {
