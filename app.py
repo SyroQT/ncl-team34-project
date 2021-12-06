@@ -1,4 +1,5 @@
 import json
+import re
 
 from flask import Flask, render_template
 
@@ -11,6 +12,15 @@ token = "pk.eyJ1Ijoic3lyb3F0IiwiYSI6ImNrd2d1M2dwOTBzMHoyd21vaXUwemZsZHYifQ.qMKLv
 @app.route("/")
 def hello_world():
     return render_template("index.html")
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
 
 
 @app.route("/user")
