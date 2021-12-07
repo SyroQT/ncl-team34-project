@@ -85,9 +85,57 @@ please don't write your css, js, and html code in a html file.
     </ul>
   </div>
 
+  <!-- New issue -->
+  <div
+  id="new-issue"
+  class="
+    flex-col
+    bg-white
+    shadow-md
+    px-4
+    sm:px-6
+    md:px-8
+    lg:px-10
+    py-8
+    rounded-3xl
+    w-80
+    max-w-md
+
+    absolute
+    top-1/2
+    left-1/2
+    transform
+    -translate-x-1/2 -translate-y-1/2
+    hidden
+  "
+>
+<form action="">
+    <div class="font-medium self-center text-xl sm:text-3xl text-gray-800">
+      Create a new issue
+    </div>
+
+   <textarea id="new-description" placeholder="Description" name="description" id="" cols="30" rows="10">
+
+   </textarea>
+
+    <div id="issue-category" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
+      This place is a category
+    </div>
+
+    <!-- Botom part of the card -->
+      <button class="btn"> 
+        Submit
+      </button>
+    </form>
+
+
+  </div>
+
   <!-- This backdrop functions as a back button -->
   <div  id="drop">
   </div>
+
+
 </div>
 
 <!-- STYLE -->
@@ -178,10 +226,48 @@ please don't write your css, js, and html code in a html file.
   height: 2rem;
 }
 
+#new-issue{
+  z-index: 10;
+}
+
+/* Button styles */
+#login {
+    height: 100vh;
+  }
+
+  .btn{
+    border-radius: 28px;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 17px;
+    padding: 16px 31px;
+    text-decoration: none;
+    background-color: #2a9d8f;
+    border: 1px solid #10695f;
+  }
+
+  .btn:hover {
+    background-color: #3cc7b7;
+  }
+
+  .btn:active{
+    position: relative;
+    top: 1px;
+  }
+  input:focus {
+    background-color: #5fd3c570;
+  }
+
 
 </style>
 
 <!-- JS -->
+<script
+type="text/javascript"
+src="{{url_for('static',filename='src/long-press.min.js')}}"
+></script>
 <script>
   
 
@@ -231,6 +317,22 @@ please don't write your css, js, and html code in a html file.
     })
   }
 
+  function newIssueHandler(e){
+  
+    const coordinates = e.lngLat;
+    console.log(coordinates);
+    const drop = document.getElementById("drop");
+    const issue = document.getElementById("new-issue");
+
+    issue.style.display = "flex";
+    drop.style.pointerEvents = "auto";
+
+    drop.addEventListener("click",  () => {
+      issue.style.display = "none"
+      drop.style.pointerEvents = "none";
+    })
+  }
+
   function init(){
     console.log("Init funct");
     const menu = document.getElementById("menu");
@@ -249,7 +351,6 @@ please don't write your css, js, and html code in a html file.
 
   // Transforming issue data from backend
   const pins = JSON.parse('{{ issues | tojson | safe}}');
-
   const card = document.getElementById("card");
 
   // Loading the map
@@ -260,21 +361,27 @@ please don't write your css, js, and html code in a html file.
     zoom: 15, // starting zoom
   });
 
-  // Pin draw and setup
-  pins.forEach((pin) => {
+  
 
-    const el = new mapboxgl.Marker({ color: pin.color })
-      .setLngLat(pin.location)
-      .addTo(map);
+  map.on('style.load', function() {
+    // New issue set up
+    map.on('click', e => newIssueHandler(e));
     
-      // Save the pin data for the element
-      for(let [key, value] of Object.entries(pin)){
-        el.getElement().setAttribute("data-"+ key, value);
-      }
-      // Add the event listener
-      el.getElement().addEventListener("click", pinClickHandler);
+    // Pin draw and setup
+    pins.forEach((pin) => {
+      console.log("add ping");
+      const el = new mapboxgl.Marker({ color: pin.color })
+        .setLngLat(pin.location)
+        .addTo(map);
+      
+        // Save the pin data for the element
+        for(let [key, value] of Object.entries(pin)){
+          el.getElement().setAttribute("data-"+ key, value);
+        }
+        // Add the event listener
+        el.getElement().addEventListener("click", pinClickHandler);
+    });
   });
-
 </script>
 
   {% endblock %}

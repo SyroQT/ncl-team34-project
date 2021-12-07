@@ -14,16 +14,17 @@ def hello_world():
     return render_template("index.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["POST", "GET"])
 def login():
     return render_template("login.html")
 
-@app.route("/register")
+
+@app.route("/register", methods=["POST", "GET"])
 def register():
     return render_template("register.html")
 
 
-@app.route("/user")
+@app.route("/user", methods=["POST", "GET"])
 def user():
     # dummy data which should be retrieved from DB
     issues = [
