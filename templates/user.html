@@ -5,11 +5,20 @@ please don't write your css, js, and html code in a html file.
 
 -->
 
+<!-- Style link -->
+<link rel="stylesheet" href="{{url_for('static', filename='css/user-styles.css')}}">
+<!-- JS link -->
+<script
+type="text/javascript"
+src="{{url_for('static',filename='src/user.js')}}"
+></script>
+
 <!-- HMTL -->
 <div id="main">
 
   <!-- Map -->
-  <div id="map" class="h-screen relative z-0">
+  <div id="map" 
+  class="h-screen relative z-0">
   </div>
   
   <!-- Menu -->
@@ -23,8 +32,7 @@ please don't write your css, js, and html code in a html file.
   </div>
 
   <!-- Issue card -->
-  <div
-  id="card"
+  <div id="card"
   class="
     flex-col
     bg-white
@@ -86,8 +94,7 @@ please don't write your css, js, and html code in a html file.
   </div>
 
   <!-- New issue -->
-  <div
-  id="new-issue"
+  <div id="new-issue"
   class="
     flex-col
     bg-white
@@ -140,208 +147,8 @@ please don't write your css, js, and html code in a html file.
 
 </div>
 
-<!-- STYLE -->
-<style>
-  /* #264653   - dark blue
-  filter: invert(22%) sepia(44%) saturate(593%) hue-rotate(152deg) brightness(85%) contrast(84%);
-  */
-  /* #2A9D8F  - green*/
-  /* #E76F51   - red*/
-  /* #F4A261   - orange*/
-  /* #E9C46A   - yellow*/
-
-#menu{
-  filter: invert(22%) sepia(44%) saturate(593%) hue-rotate(152deg) brightness(85%) contrast(84%);
-}
-
-#menu-screen{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 66vw;
-  height: 100vh;
-  background-color: #264653;
-  opacity: 80%;
-  z-index: 10;
-
-  display: none;
-}
-
-#menu-items{
-  width: 100%;
-}
-#menu-items li{
-  margin: 0.5rem 0.5rem;
-  height: 4rem;
-  background-color: honeydew;
-  border-radius: 20px;
-  position: relative;
-}
-#menu-items li a{
-  font-size: 2rem;
-  margin-left: 2rem;
-
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-#drop {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0,0,255,0.0);
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-#card{
-  pointer-events: auto;
-  opacity: 100%;
-  z-index: 10;
-}
-
-.vertical-flex{
-  margin-top: 1rem;
-  display: flex; 
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-#report-btn{
-  background-color: rgb(209, 109, 15);
-}
-
-#upvote-svg{
-
-  filter: invert(50%) sepia(81%) saturate(383%) hue-rotate(123deg) brightness(89%) contrast(83%);
-  height: 2rem;
-  width: 2rem;
-}
-
-#downvote-svg{
-
-  filter: invert(61%) sepia(99%) saturate(2190%) hue-rotate(325deg) brightness(94%) contrast(93%);
-  width: 2rem;
-  height: 2rem;
-}
-
-#new-issue{
-  z-index: 10;
-}
-
-/* Button styles */
-#login {
-    height: 100vh;
-  }
-
-  .btn{
-    border-radius: 28px;
-    display: inline-block;
-    cursor: pointer;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 17px;
-    padding: 16px 31px;
-    text-decoration: none;
-    background-color: #2a9d8f;
-    border: 1px solid #10695f;
-  }
-
-  .btn:hover {
-    background-color: #3cc7b7;
-  }
-
-  .btn:active{
-    position: relative;
-    top: 1px;
-  }
-  input:focus {
-    background-color: #5fd3c570;
-  }
-
-  #description{
-    padding: 0;
-  }
-
-
-</style>
-
 <!-- JS -->
 <script>
-  
-
-  // user file will be refactored in the future
-  function pinClickHandler(e){
-    const element = e.currentTarget;
-    const card = document.getElementById("card");
-    const drop = document.getElementById("drop");
-
-    const id = document.getElementById("issue-id");
-    const description = document.getElementById("issue-description");
-    const category = document.getElementById("issue-category");
-    const downvotes = document.getElementById("downvote");
-    const upvotes = document.getElementById("upvote");
-    
-
-    card.style.display = "flex";
-    drop.style.pointerEvents = "auto";
-
-    drop.addEventListener("click",  () => {
-      card.style.display = "none"
-      drop.style.pointerEvents = "none";
-    })
-
-    id.innerHTML = "Issue #" + element.getAttribute("data-id");
-    description.innerHTML = element.getAttribute("data-description");
-    category.innerHTML = element.getAttribute("data-category");
-    downvotes.innerHTML = element.getAttribute("data-downvotes");
-    upvotes.innerHTML = element.getAttribute("data-upvotes");
-    
-  }
-
-  function menuClickHandler(e){
-    console.log("Menu click");
-    const menuScreen = document.getElementById("menu-screen");
-    const drop = document.getElementById("drop");
-    const menu = document.getElementById("menu");
-
-    menuScreen.style.display = "flex";
-    menu.style.display = "none";
-    drop.style.pointerEvents = "auto";
-
-    drop.addEventListener("click",  () => {
-      menuScreen.style.display = "none"
-      drop.style.pointerEvents = "none";
-      menu.style.display = "inline";
-    })
-  }
-
-  function newIssueHandler(e){
-  
-    const coordinates = e.lngLat;
-    console.log(coordinates);
-    const drop = document.getElementById("drop");
-    const issue = document.getElementById("new-issue");
-
-    issue.style.display = "flex";
-    drop.style.pointerEvents = "auto";
-
-    drop.addEventListener("click",  () => {
-      issue.style.display = "none"
-      drop.style.pointerEvents = "none";
-    })
-  }
-
-  function init(){
-    console.log("Init funct");
-    const menu = document.getElementById("menu");
-    menu.addEventListener("click", menuClickHandler)
-}
-
-  // user file end
 
   init();
   mapboxgl.accessToken = "{{token}}";
@@ -394,4 +201,4 @@ please don't write your css, js, and html code in a html file.
   });
 </script>
 
-  {% endblock %}
+{% endblock %}
