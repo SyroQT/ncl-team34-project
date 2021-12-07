@@ -1,0 +1,138 @@
+{% extends "base.html" %} {% block content %}
+
+<div id="login" class="relative flex">
+  <div
+    id="card"
+    class="
+      bg-white
+      shadow-md
+      px-4
+      py-8
+      rounded-3xl
+      w-80
+      max-w-md
+      absolute
+      top-1/2
+      left-1/2
+      transform
+      -translate-x-1/2 -translate-y-1/2
+    "
+  >
+    <form action="{{url_for('login')}}" method="post">
+      <div
+        id="title"
+        class="font-medium self-center text-xl sm:text-3xl text-gray-800"
+      >
+        Login to Issue Tracker
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4 mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+          Email
+        </label>
+        <input
+          class="
+            shadow
+            appearance-none
+            border
+            rounded
+            w-full
+            py-2
+            px-3
+            text-gray-700
+            leading-tight
+            focus:outline-none focus:shadow-outline
+          "
+          id="email"
+          type="text"
+          required
+          placeholder="email@example.io"
+        />
+      </div>
+      <!-- Password -->
+      <div class="mb-6">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="password"
+        >
+          Password
+        </label>
+        <input
+          class="
+            shadow
+            appearance-none
+            border
+            rounded
+            w-full
+            py-2
+            px-3
+            text-gray-700
+            mb-3
+            leading-tight
+            focus:outline-none focus:shadow-outline
+          "
+          id="password"
+          required
+          type="password"
+          placeholder="******************"
+        />
+      </div>
+      <!-- Bottom part -->
+      <div class="flex flex-row justify-around">
+        <button type="submit">Submit</button>
+        <a href="{{url_for('register')}}">Register</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  body {
+    background-color: #264653;
+  }
+  #login {
+    height: 100vh;
+  }
+
+  button,
+  a {
+    border-radius: 28px;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 17px;
+    padding: 16px 31px;
+    text-decoration: none;
+  }
+
+  button:hover {
+    background-color: #3cc7b7;
+  }
+  a:hover {
+    background-color: #facb53;
+  }
+
+  button:active,
+  a:active {
+    position: relative;
+    top: 1px;
+  }
+
+  button {
+    background-color: #2a9d8f;
+    border: 1px solid #10695f;
+  }
+
+  a {
+    background-color: #dbb145;
+    border: 1px solid #b9922d;
+  }
+
+  input:focus {
+    background-color: #5fd3c570;
+  }
+</style>
+
+{% endblock %}

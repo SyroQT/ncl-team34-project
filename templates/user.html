@@ -5,11 +5,20 @@ please don't write your css, js, and html code in a html file.
 
 -->
 
+<!-- Style link -->
+<link rel="stylesheet" href="{{url_for('static', filename='css/user-styles.css')}}">
+<!-- JS link -->
+<script
+type="text/javascript"
+src="{{url_for('static',filename='src/user.js')}}"
+></script>
+
 <!-- HMTL -->
 <div id="main">
 
   <!-- Map -->
-  <div id="map" class="h-screen relative z-0">
+  <div id="map" 
+  class="h-screen relative z-0">
   </div>
   
   <!-- Menu -->
@@ -23,8 +32,7 @@ please don't write your css, js, and html code in a html file.
   </div>
 
   <!-- Issue card -->
-  <div
-  id="card"
+  <div id="card"
   class="
     flex-col
     bg-white
@@ -77,172 +85,80 @@ please don't write your css, js, and html code in a html file.
 
   </div>
 
+  <!-- Menu card popup -->
   <div id="menu-screen">
     <ul id="menu-items">
-      <li><a href="#">About</a></li>
-      <li><a href="#">Logout</a></li>
+      <li><a href="{{url_for('about')}}">About</a></li>
+      <li><a href="{{url_for('logout')}}">Logout</a></li>
     </ul>
+  </div>
+
+  <!-- New issue -->
+  <div id="new-issue"
+  class="
+    flex-col
+    bg-white
+    shadow-md
+    px-4
+    sm:px-6
+    md:px-8
+    lg:px-10
+    py-8
+    rounded-3xl
+    w-80
+    max-w-md
+
+    absolute
+    top-1/2
+    left-1/2
+    transform
+    -translate-x-1/2 -translate-y-1/2
+    hidden
+  "
+  >
+    <form action="{{url_for('new_issue')}}", method="POST">
+    <div class="font-medium mb-4 self-center text-xl sm:text-3xl text-gray-800">
+      Create a new issue
+    </div>
+    <label for="new-description">Description</label>
+    <textarea id="new-description" required name="description" cols="32" rows="3"></textarea>
+    </textarea>
+
+    <div id="issue-category" class="mb-4 self-center text-xl sm:text-sm text-gray-800">
+      <label for="category" class="mb-4">Select the category</label>
+      <select name="category" id="category">
+        {% for category in categories %}
+        <option value="{{category}}"> {{category}} </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Botom part of the card -->
+      <button class="btn mt-4"> 
+        Submit
+      </button>
+    </form>
   </div>
 
   <!-- This backdrop functions as a back button -->
   <div  id="drop">
   </div>
+
+
 </div>
-
-<!-- STYLE -->
-<style>
-  /* #264653   - dark blue
-  filter: invert(22%) sepia(44%) saturate(593%) hue-rotate(152deg) brightness(85%) contrast(84%);
-  */
-  /* #2A9D8F  - green*/
-  /* #E76F51   - red*/
-  /* #F4A261   - orange*/
-  /* #E9C46A   - yellow*/
-
-#menu{
-  filter: invert(22%) sepia(44%) saturate(593%) hue-rotate(152deg) brightness(85%) contrast(84%);
-}
-
-#menu-screen{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 66vw;
-  height: 100vh;
-  background-color: #264653;
-  opacity: 80%;
-  z-index: 10;
-
-  display: none;
-}
-
-#menu-items{
-  width: 100%;
-}
-#menu-items li{
-  margin: 0.5rem 0.5rem;
-  height: 4rem;
-  background-color: honeydew;
-  border-radius: 20px;
-}
-#menu-items li a{
-  font-size: 2rem;
-  margin: auto;
-}
-
-#drop {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0,0,255,0.0);
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-#card{
-  pointer-events: auto;
-  opacity: 100%;
-  z-index: 10;
-}
-
-.vertical-flex{
-  margin-top: 1rem;
-  display: flex; 
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-#report-btn{
-  background-color: rgb(209, 109, 15);
-}
-
-#upvote-svg{
-
-  filter: invert(50%) sepia(81%) saturate(383%) hue-rotate(123deg) brightness(89%) contrast(83%);
-  height: 2rem;
-  width: 2rem;
-}
-
-#downvote-svg{
-
-  filter: invert(61%) sepia(99%) saturate(2190%) hue-rotate(325deg) brightness(94%) contrast(93%);
-  width: 2rem;
-  height: 2rem;
-}
-
-
-</style>
 
 <!-- JS -->
 <script>
-  
-
-  // user file will be refactored in the future
-  function pinClickHandler(e){
-    const element = e.currentTarget;
-    const card = document.getElementById("card");
-    const drop = document.getElementById("drop");
-
-    const id = document.getElementById("issue-id");
-    const description = document.getElementById("issue-description");
-    const category = document.getElementById("issue-category");
-    const downvotes = document.getElementById("downvote");
-    const upvotes = document.getElementById("upvote");
-    
-
-    card.style.display = "flex";
-    drop.style.pointerEvents = "auto";
-
-    drop.addEventListener("click",  () => {
-      card.style.display = "none"
-      drop.style.pointerEvents = "none";
-    })
-
-    id.innerHTML = "Issue #" + element.getAttribute("data-id");
-    description.innerHTML = element.getAttribute("data-description");
-    category.innerHTML = element.getAttribute("data-category");
-    downvotes.innerHTML = element.getAttribute("data-downvotes");
-    upvotes.innerHTML = element.getAttribute("data-upvotes");
-    
-  }
-
-  function menuClickHandler(e){
-    console.log("Menu click");
-    const menuScreen = document.getElementById("menu-screen");
-    const drop = document.getElementById("drop");
-    const menu = document.getElementById("menu");
-
-    menuScreen.style.display = "flex";
-    menu.style.display = "none";
-    drop.style.pointerEvents = "auto";
-
-    drop.addEventListener("click",  () => {
-      menuScreen.style.display = "none"
-      drop.style.pointerEvents = "none";
-      menu.style.display = "inline";
-    })
-  }
-
-  function init(){
-    console.log("Init funct");
-    const menu = document.getElementById("menu");
-    menu.addEventListener("click", menuClickHandler)
-}
-
-  // user file end
 
   init();
   mapboxgl.accessToken = "{{token}}";
 
   // Map center is helixSq
   const helixSq = [-1.6268, 54.9729];
-
   const streetMap = "mapbox://styles/mapbox/streets-v11";
 
   // Transforming issue data from backend
   const pins = JSON.parse('{{ issues | tojson | safe}}');
-
   const card = document.getElementById("card");
 
   // Loading the map
@@ -253,22 +169,36 @@ please don't write your css, js, and html code in a html file.
     zoom: 15, // starting zoom
   });
 
-  // Pin draw and setup
-  pins.forEach((pin) => {
-
-    const el = new mapboxgl.Marker({ color: pin.color })
-      .setLngLat(pin.location)
-      .addTo(map);
+  
+  // Setup event handlers 
+  map.on('style.load', function() {
     
-      // Save the pin data for the element
-      for(let [key, value] of Object.entries(pin)){
-        el.getElement().setAttribute("data-"+ key, value);
-      }
-      // Add the event listener
-      el.getElement().addEventListener("click", pinClickHandler);
-  });
+    // Adding a new issue
+    map.on('click', function(e) {
+      const coordinates = e.lngLat;
+      const newIssue = document.getElementById("new-issue");
+      const card = document.getElementById("card");
 
+      if (card.style.display === "none" || card.style.display === ""){
+        newIssueHandler(e);
+      }
+    }); 
+
+    // Pin draw and setup
+    pins.forEach((pin) => {
+      const el = new mapboxgl.Marker({ color: pin.color })
+        .setLngLat(pin.location)
+        .addTo(map);
+      
+
+        // Save the pin data for the element
+        for(let [key, value] of Object.entries(pin)){
+          el.getElement().setAttribute("data-"+ key, value);
+        }
+        // Add the event listener
+        el.getElement().addEventListener("click", pinClickHandler);
+    });
+  });
 </script>
 
-  {% endblock %}
-</div>
+{% endblock %}
