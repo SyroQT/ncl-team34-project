@@ -1,7 +1,7 @@
 import json
 import re
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -47,7 +47,17 @@ def user():
             "downvotes": 600,
         },
     ]
-    return render_template("user.html", token=token, issues=issues)
+    categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]
+    return render_template(
+        "user.html", token=token, issues=issues, categories=categories
+    )
+
+
+@app.route("/new_issue", methods=["POST"])
+def new_issue():
+    # Place where new issue data is sent
+    print(request.form)
+    return "New issue is taken care of"
 
 
 if __name__ == "__main__":

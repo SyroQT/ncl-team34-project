@@ -108,27 +108,29 @@ please don't write your css, js, and html code in a html file.
     -translate-x-1/2 -translate-y-1/2
     hidden
   "
->
-<form action="">
-    <div class="font-medium self-center text-xl sm:text-3xl text-gray-800">
+  >
+    <form action="{{url_for('new_issue')}}", method="POST">
+    <div class="font-medium mb-4 self-center text-xl sm:text-3xl text-gray-800">
       Create a new issue
     </div>
+    <label for="new-description">Description</label>
+    <textarea id="new-description" required name="description" cols="32" rows="3"></textarea>
+    </textarea>
 
-   <textarea id="new-description" placeholder="Description" name="description" id="" cols="30" rows="10">
-
-   </textarea>
-
-    <div id="issue-category" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
-      This place is a category
+    <div id="issue-category" class="mb-4 self-center text-xl sm:text-sm text-gray-800">
+      <label for="category" class="mb-4">Select the category</label>
+      <select name="category" id="category">
+        {% for category in categories %}
+        <option value="{{category}}"> {{category}} </option>
+        {% endfor %}
+      </select>
     </div>
 
     <!-- Botom part of the card -->
-      <button class="btn"> 
+      <button class="btn mt-4"> 
         Submit
       </button>
     </form>
-
-
   </div>
 
   <!-- This backdrop functions as a back button -->
@@ -260,13 +262,17 @@ please don't write your css, js, and html code in a html file.
     background-color: #5fd3c570;
   }
 
+  #description{
+    padding: 0;
+  }
+
 
 </style>
 
 <!-- JS -->
 <script
 type="text/javascript"
-src="{{url_for('static',filename='src/long-press.min.js')}}"
+src="{{url_for('static',filename='src/long-press-event.min.js')}}"
 ></script>
 <script>
   
@@ -346,7 +352,6 @@ src="{{url_for('static',filename='src/long-press.min.js')}}"
 
   // Map center is helixSq
   const helixSq = [-1.6268, 54.9729];
-
   const streetMap = "mapbox://styles/mapbox/streets-v11";
 
   // Transforming issue data from backend
@@ -362,18 +367,27 @@ src="{{url_for('static',filename='src/long-press.min.js')}}"
   });
 
   
-
+  // Setup event handlers 
   map.on('style.load', function() {
-    // New issue set up
-    map.on('click', e => newIssueHandler(e));
     
+    // Adding a new issue
+    map.on('click', function(e) {
+      const coordinates = e.lngLat;
+      const newIssue = document.getElementById("new-issue");
+      const card = document.getElementById("card");
+
+      if (card.style.display === "none" || card.style.display === ""){
+        newIssueHandler(e);
+      }
+    }); 
+
     // Pin draw and setup
     pins.forEach((pin) => {
-      console.log("add ping");
       const el = new mapboxgl.Marker({ color: pin.color })
         .setLngLat(pin.location)
         .addTo(map);
       
+
         // Save the pin data for the element
         for(let [key, value] of Object.entries(pin)){
           el.getElement().setAttribute("data-"+ key, value);
