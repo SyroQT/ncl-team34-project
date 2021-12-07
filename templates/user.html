@@ -80,8 +80,8 @@ please don't write your css, js, and html code in a html file.
   <!-- Menu card popup -->
   <div id="menu-screen">
     <ul id="menu-items">
-      <li><a href="#">About</a></li>
-      <li><a href="#">Logout</a></li>
+      <li><a href="{{url_for('about')}}">About</a></li>
+      <li><a href="{{url_for('logout')}}">Logout</a></li>
     </ul>
   </div>
 
@@ -270,10 +270,6 @@ please don't write your css, js, and html code in a html file.
 </style>
 
 <!-- JS -->
-<script
-type="text/javascript"
-src="{{url_for('static',filename='src/long-press-event.min.js')}}"
-></script>
 <script>
   
 
