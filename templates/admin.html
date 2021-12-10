@@ -1,0 +1,274 @@
+{% extends "base.html" %} {% block content %}
+<!-- User view and its functionality 
+written in vanila JS
+please don't write your css, js, and html code in a html file. 
+
+-->
+
+<!-- Style link -->
+<link rel="stylesheet" href="{{url_for('static', filename='css/user-styles.css')}}">
+<!-- JS link -->
+
+<script
+type="text/javascript"
+src="{{url_for('static',filename='src/user.js')}}"
+></script>
+
+<!-- HMTL -->
+<div id="main">
+
+    <!-- Map -->
+    <div id="map" 
+    class="h-screen relative z-0">
+    </div>
+  
+    <!-- Menu -->
+    <div>
+        <img
+        src="{{url_for('static', filename='src/assets/iconmonstr-menu-5.svg')}}"
+        alt="Menu"
+        id="menu"
+        class="absolute bottom-0 left-0 w-20 h-20 mb-8 ml-6"
+        />
+    </div>
+
+    <!-- Issue card -->
+    <!-- TODO add button to remove -->
+    <div id="card"
+    class="
+        flex-col
+        bg-white
+        shadow-md
+        px-4
+        sm:px-6
+        md:px-8
+        lg:px-10
+        py-8
+        rounded-3xl
+        w-80
+        max-w-md
+
+        absolute
+        top-1/2
+        left-1/2
+        transform
+        -translate-x-1/2 -translate-y-1/2
+        hidden
+    "
+    >
+    <div id="issue-id" class="font-medium self-center text-xl sm:text-3xl text-gray-800">
+        Here goes id
+    </div>
+
+    <div id="issue-description" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
+        This is a place for a short description
+    </div>
+
+    <div id="issue-category" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
+        This place is a category
+    </div>
+
+    <!-- Botom part of the card -->
+    <div class="vertical-flex">
+        <a href="#">
+            <p id="downvote"></p>
+                <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
+        </a>
+
+        <button if="report-btn" class="cursor-pointer outline-none">Report</button>
+            
+        <a href="#">
+            <p id="upvote"></p>
+                <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
+        </a>
+
+        </button>
+    </div>
+
+    </div>
+
+    <!-- Menu card popup -->
+    <div id="menu-screen">
+        <ul id="menu-items">
+            <li><a href="javascript: void(0);" onclick="adminToolsHandler()">Admin tools</a></li>
+            <li><a href="{{url_for('about')}}">About</a></li>
+            <li><a href="{{url_for('logout')}}">Logout</a></li>
+        </ul>
+    </div>
+
+  <!-- Admin tools --> 
+    <div id="admin" class="w-full rounded-3xl bg-white p-12 hidden overflow-auto">
+        <div class="header flex content-center justify-between mb-12">
+            <div class="title">
+                <p class="text-4xl font-bold text-gray-800 mb-4">
+                    Admin tools
+                </p>
+                <!-- <p class="text-2xl font-light text-gray-400">
+                    All article are verified by 2 experts and valdiate by the CTO
+                </p> -->
+            </div>
+            <div class="">
+                <form class="flex flex-col md:flex-row w-3/4 md:w-full max-w-sm md:space-x-3 space-y-3 md:space-y-0 justify-center">
+                    <div class=" relative ">
+                        <label for="search-category" class="mb-4 ">Select the category</label>
+                        <br>
+                        <select name="category" id="search-category" onchange="adminToolsHandler()">
+                        {% for category in categories %}
+                        <option value="{{category}}"> {{category}} </option>
+                        {% endfor %}
+                        </select>
+                        </div>
+                    </form>
+            </div>
+        </div>
+            <div id="admin-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
+
+            
+            </div>
+    </div>
+
+    <!-- Admin card template -->
+    <div id="admin-card" class="overflow-hidden hidden shadow-lg rounded-lg h-90 w-60 md:w-80">
+        <div id="admin-card-inner" class="bg-white dark:bg-gray-800 w-full p-4">
+            <p id="category" class="text-indigo-500 text-md font-medium">
+                Video
+            </p>
+            <p id="issue-id" class="text-gray-800 dark:text-white text-xl font-medium mb-2">
+                Work at home
+            </p>
+            <p id="description" class="text-gray-400 dark:text-gray-300 font-light text-md">
+                Work at home, remote, is the new age of the job, every person can work at home....
+            </p>
+            <div id="votes" class="flex justify-between ml-4 text-sm">
+                <div id="downvote"><img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt=""></div>
+                <div id="upvote"><img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt=""></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- This backdrop functions as a back button -->
+    <div  id="drop">
+    </div>
+
+
+</div>
+
+
+<!-- STYLE -->
+<style>
+    #admin{
+        z-index: 10;
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        height: 80vh;
+        width: 90vw;
+        transform: translate(50%, -50%); 
+    }
+</style>
+
+
+
+<!-- Main JS -->
+<script>
+  init();
+  mapboxgl.accessToken = "{{token}}";
+
+  // Map center is helixSq
+  const helixSq = [-1.6268, 54.9729];
+  const streetMap = "mapbox://styles/mapbox/streets-v11";
+
+  // Transforming issue data from backend
+  const pins = JSON.parse('{{ issues | tojson | safe}}');
+  const card = document.getElementById("card");
+
+  // Loading the map
+  var map = new mapboxgl.Map({
+    container: "map",
+    style: streetMap,
+    center: helixSq, // starting position [lng, lat]
+    zoom: 15, // starting zoom
+  });
+
+  // Setup event handlers 
+  map.on('style.load', function() {
+
+    // Pin draw and setup
+    pins.forEach((pin) => {
+      const el = new mapboxgl.Marker({ color: pin.color })
+        .setLngLat(pin.location)
+        .addTo(map);
+      
+
+        // Save the pin data for the element
+        for(let [key, value] of Object.entries(pin)){
+          el.getElement().setAttribute("data-"+ key, value);
+        }
+        // Add the event listener
+        el.getElement().addEventListener("click", pinClickHandler);
+    });
+  });
+</script>
+
+<!-- Event handler JS -->
+<script>
+// Function for the admin grid functionality
+function adminToolsHandler(){
+    const drop = document.getElementById("drop");
+    const admin = document.getElementById("admin");
+    const adminGrid = document.getElementById("admin-grid");
+    const card = document.getElementById("admin-card")
+    const category = document.getElementById("search-category").value
+   
+    // Get pin data from the back end
+    const pinData = JSON.parse('{{ issues | tojson | safe}}');
+    // Clean the grid
+    adminGrid.innerHTML = "";
+
+    // Back functionality
+    drop.click();
+    admin.style.display = "inline";
+    drop.style.pointerEvents = "auto";
+    drop.addEventListener("click",  () => {
+      admin.style.display = "none"
+      drop.style.pointerEvents = "none";
+    })
+
+    // Filter the pins 
+    const filteredPins = pinData.filter(el => el.category === category);
+    
+    // Add a card for each of the filtered pins
+    filteredPins.forEach(pin => {
+        const newCard = card.cloneNode(true);
+        
+        // Overcomplicated loop for inserting the correct text
+        const elements = newCard.children[0].children;
+        for (let i=0; i<elements.length; i++){
+            switch(elements[i].id){
+                case "category":
+                        elements[i].innerHTML = pin.category;
+                    break;
+                
+                case "issue-id":
+                        elements[i].innerHTML = "#" + pin.id;
+                    break;
+
+                case "description":
+                        elements[i].innerHTML = pin.description;
+                    break;
+
+                case "votes":
+                        elements[i].children[0].innerHTML += "<p>" + pin.downvotes + "</p>" ;
+                        elements[i].children[1].innerHTML += "<p>" +  pin.upvotes + "</p>";
+                    break;
+            }
+        }
+        
+        // Makes card visible and adds it to the admin grid
+        newCard.style.display = "inline";
+        adminGrid.appendChild(newCard);
+    })
+}
+</script>
+
+{% endblock %}
