@@ -1,7 +1,8 @@
 import json
 import re
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
+from users.forms import RegisterForm, LoginForm
 
 app = Flask(__name__)
 
@@ -18,7 +19,9 @@ def hello_world():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+
+    return render_template("login.html", form=form)
 
 
 # Logout handler
@@ -30,7 +33,14 @@ def logout():
 # Register route
 @app.route("/register", methods=["POST", "GET"])
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        print(request.form.get('email'))
+        print(request.form.get('password'))
+
+        return login()
+    return render_template("register.html", form=form)
 
 
 # User view of the app
