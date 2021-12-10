@@ -1,3 +1,6 @@
 flask
 Jinja2
 Flask-SQLAlchemy
+WTForms
+Flask-WTF
+email-validator
