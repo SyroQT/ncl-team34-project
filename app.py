@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, flash
 from users.forms import RegisterForm, LoginForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'LongAndRandomSecretKey'
 
 # Token for map API
 # Will have to put it in the env variable or smt
@@ -20,7 +21,6 @@ def hello_world():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     form = LoginForm()
-
     return render_template("login.html", form=form)
 
 
