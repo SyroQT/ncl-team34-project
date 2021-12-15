@@ -2,9 +2,16 @@ import json
 import re
 
 from flask import Flask, render_template, request, flash
+from flaskext.mysql import MySQL
 from users.forms import RegisterForm, LoginForm
 
 app = Flask(__name__)
+mysql = MySQL()
+app.config['MYSQL_DATABASE_USER'] = "csc2033_team34"
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Lent2PepBeau'
+app.config['MYSQL_DATABASE_DB'] = 'csc2033_team34'
+app.config['MYSQL_DATABASE_HOST'] = 'cs-db.ncl.ac.uk'
+mysql.init_app(app)
 
 # Token for map API
 # Will have to put it in the env variable or smt
