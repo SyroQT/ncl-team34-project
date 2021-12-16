@@ -8,6 +8,7 @@ function pinClickHandler(e){
     const id = document.getElementById("issue-id");
     const description = document.getElementById("issue-description");
     const category = document.getElementById("issue-category");
+    const score = document.getElementById("score");
     const downvotes = document.getElementById("downvote");
     const upvotes = document.getElementById("upvote");
     
@@ -23,8 +24,9 @@ function pinClickHandler(e){
     id.innerHTML = "Issue #" + element.getAttribute("data-id");
     description.innerHTML = element.getAttribute("data-description");
     category.innerHTML = element.getAttribute("data-category");
-    downvotes.innerHTML = element.getAttribute("data-downvotes");
-    upvotes.innerHTML = element.getAttribute("data-upvotes");
+    score.innerHTML = element.getAttribute("data-score");
+    // downvotes.innerHTML = element.getAttribute("data-downvotes");
+    // upvotes.innerHTML = element.getAttribute("data-upvotes");
     
   }
 
