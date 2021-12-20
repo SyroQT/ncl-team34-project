@@ -68,19 +68,19 @@ src="{{url_for('static',filename='src/user.js')}}"
 
   <!-- Botom part of the card -->
   <div class="vertical-flex">
+    <p id="score"></p>
       <a href="#">
         <p id="downvote"></p>
             <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
       </a>
 
-      <button if="report-btn" class="cursor-pointer outline-none">Report</button>
+      <!-- <button if="report-btn" class="cursor-pointer outline-none">Report</button> -->
         
       <a href="#">
         <p id="upvote"></p>
             <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
       </a>
 
-      </button>
   </div>
 
   </div>

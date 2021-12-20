@@ -25,8 +25,7 @@ issues = [
         "id": 363,
         "description": "This is a description",
         "category": "Environmental",
-        "upvotes": 500,
-        "downvotes": 60,
+        "score": 500,
     },
     {  # USB
         "location": [-1.62494, 54.9735751],
@@ -34,8 +33,7 @@ issues = [
         "id": 696,
         "description": "This is a description",
         "category": "Lights",
-        "upvotes": 555,
-        "downvotes": 600,
+        "score": 555,
     },
     {  # The Catalyst
         "location": [-1.6244480090820115, 54.97322654028629],
@@ -43,8 +41,7 @@ issues = [
         "id": 35,
         "description": "This is a description",
         "category": "Lights",
-        "upvotes": 55,
-        "downvotes": 6,
+        "score": 55,
     },
     {  # FDC
         "location": [-1.6251856666991449, 54.973163909898304],
@@ -52,8 +49,7 @@ issues = [
         "id": 6,
         "description": "This is a description",
         "category": "Cars",
-        "upvotes": 42,
-        "downvotes": 69,
+        "score": 42,
     },
 ]
 categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]

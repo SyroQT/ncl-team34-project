@@ -18,12 +18,68 @@
     "
   >
     <form action="{{url_for('register')}}" method="post">
-      <!-- Name -->
+      <!-- Title  -->
       <div
         id="title"
         class="font-medium self-center text-xl sm:text-3xl text-gray-800"
       >
         Create an account
+      </div>
+
+      <!-- First Name -->
+      <div class="mb-4 mt-4">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="first-name"
+        >
+          First Name
+        </label>
+        <input
+          class="
+            shadow
+            appearance-none
+            border
+            rounded
+            w-full
+            py-2
+            px-3
+            text-gray-700
+            leading-tight
+            focus:outline-none focus:shadow-outline
+          "
+          id="first-name"
+          type="text"
+          required
+          placeholder="First name"
+        />
+      </div>
+
+      <!-- Last name -->
+      <div class="mb-4 mt-4">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="last-name"
+        >
+          Last name
+        </label>
+        <input
+          class="
+            shadow
+            appearance-none
+            border
+            rounded
+            w-full
+            py-2
+            px-3
+            text-gray-700
+            leading-tight
+            focus:outline-none focus:shadow-outline
+          "
+          id="last-name"
+          type="text"
+          required
+          placeholder="Last name"
+        />
       </div>
 
       <!-- Email -->
@@ -45,11 +101,37 @@
             focus:outline-none focus:shadow-outline
           "
           id="email"
-          type="text"
+          type="email"
           required
           placeholder="email@example.io"
         />
       </div>
+
+      <!-- Phone -->
+      <div class="mb-4 mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
+          Phone number
+        </label>
+        <input
+          class="
+            shadow
+            appearance-none
+            border
+            rounded
+            w-full
+            py-2
+            px-3
+            text-gray-700
+            leading-tight
+            focus:outline-none focus:shadow-outline
+          "
+          id="phone"
+          type="number"
+          required
+          placeholder="+44..."
+        />
+      </div>
+
       <!-- Password -->
       <div class="mb-6">
         <label

@@ -139,7 +139,7 @@ src="{{url_for('static',filename='src/user.js')}}"
             <p id="description" class="text-gray-400 dark:text-gray-300 font-light text-md">
                 Work at home, remote, is the new age of the job, every person can work at home....
             </p>
-            <div id="votes" class="flex justify-between ml-4 text-sm">
+            <div id="vote" class="flex justify-between ml-4 text-sm">
                 <div id="downvote"><img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt=""></div>
                 <div id="upvote"><img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt=""></div>
             </div>
@@ -236,7 +236,7 @@ function adminToolsHandler(){
 
     // Filter the pins 
     const filteredPins = pinData.filter(el => el.category === category);
-    
+
     // Add a card for each of the filtered pins
     filteredPins.forEach(pin => {
         const newCard = card.cloneNode(true);
@@ -257,9 +257,12 @@ function adminToolsHandler(){
                         elements[i].innerHTML = pin.description;
                     break;
 
-                case "votes":
-                        elements[i].children[0].innerHTML += "<p>" + pin.downvotes + "</p>" ;
-                        elements[i].children[1].innerHTML += "<p>" +  pin.upvotes + "</p>";
+                case "vote":
+                        // elements[i].children[0].innerHTML =  document.getElementById("downvote").textContent;
+                        // elements[i].children[1].innerHTML =  document.getElementById("upvote").textContent;
+                        elements[i].innerHTML = "<p>" + pin.score + "</p>";
+                        // elements[i].children[0].innerHTML += "<p>" + pin.downvotes + "</p>" ;
+                        // elements[i].children[1].innerHTML += "<p>" +  pin.upvotes + "</p>";
                     break;
             }
         }
