@@ -67,20 +67,20 @@ src="{{url_for('static',filename='src/user.js')}}"
   </div>
 
   <!-- Botom part of the card -->
-  <div class="vertical-flex">
+  <div class="vertical-flex" id="voting">
     <p id="score"></p>
-      <a href="#">
-        <p id="downvote"></p>
-            <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
-      </a>
 
-      <!-- <button if="report-btn" class="cursor-pointer outline-none">Report</button> -->
-        
-      <a href="#">
-        <p id="upvote"></p>
+    <form action="{{url_for('score_cast')}}", method="POST" id="downvote">
+      <a id="downvote-a" href="#" onclick="document.getElementById('downvote').submit();">
+          <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
+      </a>  
+    </form>
+
+    <form action="{{url_for('score_cast')}}", method="POST" id="upvote">
+      <a id="upvote-a" href="#" onclick="document.getElementById('upvote').submit();">
             <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
       </a>
-
+    </form>
   </div>
 
   </div>

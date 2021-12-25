@@ -9,9 +9,10 @@ function pinClickHandler(e){
     const description = document.getElementById("issue-description");
     const category = document.getElementById("issue-category");
     const score = document.getElementById("score");
-    const downvotes = document.getElementById("downvote");
-    const upvotes = document.getElementById("upvote");
-    
+    const downvote = document.getElementById("downvote-a");
+    const upvote = document.getElementById("upvote-a");
+    let upvoteFlag = false;
+    let downvoteFlag = false;
 
     card.style.display = "flex";
     drop.style.pointerEvents = "auto";
@@ -25,8 +26,31 @@ function pinClickHandler(e){
     description.innerHTML = element.getAttribute("data-description");
     category.innerHTML = element.getAttribute("data-category");
     score.innerHTML = element.getAttribute("data-score");
-    // downvotes.innerHTML = element.getAttribute("data-downvotes");
-    // upvotes.innerHTML = element.getAttribute("data-upvotes");
+
+    // // Voting handlers
+    // downvote.addEventListener("click", e => {
+    //   console.log("Downvote");
+    //   // first click
+    //   // unclick
+    //   // 
+    //   if(!downvoteFlag){
+    //     const value = parseInt(score.innerHTML);
+    //     score.innerHTML = value - 1;
+    //     downvoteFlag = true;
+    //     upvoteFlag = false;
+    //   }
+    // });
+
+    // upvote.addEventListener("click", e => {
+    //   console.log("Upvote");
+    //   if(!upvoteFlag){
+    //     const value = parseInt(score.innerHTML);
+    //     score.innerHTML = value + 1;
+    //     upvoteFlag = true;
+    //     downvoteFlag = false;
+    //   }
+    // });
+    
     
   }
 
