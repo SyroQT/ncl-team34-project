@@ -109,6 +109,12 @@ def new_issue():
     print(request.form)
     return "New issue is taken care of"
 
+# Place where new issue data is sent
+@app.route("/score_cast", methods=["POST"])
+def score_cast():
+    print(request.form)
+    return "Your vote is now casted"
+
 
 # About page
 @app.route("/about")
