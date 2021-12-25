@@ -2,8 +2,17 @@ import json
 import re
 
 from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+
+# Database creds
+mysql = SQLAlchemy()
+app.config["MYSQL_DATABASE_USER"] = "csc2033_team34"
+app.config["MYSQL_DATABASE_PASSWORD"] = "Lent2PepBeau"
+app.config["MYSQL_DATABASE_DB"] = "csc2033_team34"
+app.config["MYSQL_DATABASE_HOST"] = "cs-db.ncl.ac.uk"
+mysql.init_app(app)
 
 # Token for map API
 # Will have to put it in the env variable or smt
@@ -91,6 +100,7 @@ def admin():
 def new_issue():
     print(request.form)
     return "New issue is taken care of"
+
 
 # Place where new issue data is sent
 @app.route("/score_cast", methods=["POST"])
