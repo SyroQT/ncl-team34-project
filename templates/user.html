@@ -190,7 +190,6 @@ src="{{url_for('static',filename='src/user.js')}}"
         .setLngLat(pin.location)
         .addTo(map);
       
-
         // Save the pin data for the element
         for(let [key, value] of Object.entries(pin)){
           el.getElement().setAttribute("data-"+ key, value);
