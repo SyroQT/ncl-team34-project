@@ -124,3 +124,19 @@ input:focus {
 #description {
   padding: 0;
 }
+
+/* Media */
+@media (min-width: 500px) {
+  #menu-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30vw;
+    height: 100vh;
+    background-color: #264653;
+    opacity: 80%;
+    z-index: 10;
+
+    display: none;
+  }
+}
