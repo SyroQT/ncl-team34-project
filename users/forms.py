@@ -17,10 +17,10 @@ class RegisterForm(FlaskForm):
     firstname = StringField(validators=[Required(), character_check])
     lastname = StringField(validators=[Required(), character_check])
     email = StringField(validators=[Required(), Email()])
-    phone = StringField(validators=[Required()])
     password = PasswordField(validators=[Required(), Length(min=6, max=12,
                                                             message='Password must be between 6 and 12 characters in length.')])
     password_confirm = PasswordField(validators=[Required(), EqualTo('password', message='Both password fields must be equal!')])
+    phonenumber = StringField(validators=[Required()])
     submit = SubmitField()
 
 
