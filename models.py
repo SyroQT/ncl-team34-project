@@ -48,18 +48,18 @@ class User(db.Model):
     email = db.Column(db.String(32), nullable=False)
     password = db.Column(db.String(20), nullable=False)
     phone_number = db.Column(db.String(11), nullable=False)
-    admin = db.Column(db.Boolean, nullable=False)
+    isAdmin = db.Column(db.Boolean, nullable=False)
 
     # issues = db.relationship('Issue')
 
-    def __init(self, username, firstname, lastname, email, password, phone_number, admin):
+    def __init(self, username, firstname, lastname, email, password, phone_number, isAdmin):
         self.username = username
         self.firstname = firstname
         self.lastname = lastname
         self.email = email
         self.password = password
         self.phone_number = phone_number
-        self.admin = admin
+        self.isAdmin = isAdmin
 
 
 def init_db():

@@ -80,7 +80,7 @@ please don't write your css, js, and html code in a html file.
     <!-- Botom part of the card -->
     <div class="vertical-flex">
       <p id="score"></p>
-        <a href="{{url_for('register')}}">Delete</a>
+      <a href="{{url_for('register')}}">Delete</a>
     </div>
   </div>
 
@@ -226,9 +226,9 @@ please don't write your css, js, and html code in a html file.
   // Setup event handlers
   map.on("style.load", function () {
     // Pin draw and setup
-    pins.forEach((pin) => {
+    for (let [key, pin] of Object.entries(pins)) {
       const el = new mapboxgl.Marker({ color: pin.color })
-        .setLngLat(pin.location)
+        .setLngLat([pin.lng, pin.lat])
         .addTo(map);
 
       // Save the pin data for the element
@@ -237,14 +237,14 @@ please don't write your css, js, and html code in a html file.
       }
       // Add the event listener
       el.getElement().addEventListener("click", pinClickHandler);
-    });
+    }
   });
 </script>
 
 <!-- Event handler JS -->
 <script>
-  function  deleteIssueHandler(e){
-      console.log(e);
+  function deleteIssueHandler(e) {
+    console.log(e);
   }
   // Function for the admin grid functionality
   function adminToolsHandler() {
@@ -269,7 +269,11 @@ please don't write your css, js, and html code in a html file.
     });
 
     // Filter the pins
-    const filteredPins = pinData.filter((el) => el.category === category);
+    const pins = [];
+    for (let [key, pin] of Object.entries(pinData)) {
+      pins.push(pin);
+    }
+    const filteredPins = pins.filter((el) => el.category === category);
 
     // Add a card for each of the filtered pins
     filteredPins.forEach((pin) => {

@@ -26,31 +26,6 @@ function pinClickHandler(e){
     description.innerHTML = element.getAttribute("data-description");
     category.innerHTML = element.getAttribute("data-category");
     score.innerHTML = element.getAttribute("data-score");
-
-    // // Voting handlers
-    // downvote.addEventListener("click", e => {
-    //   console.log("Downvote");
-    //   // first click
-    //   // unclick
-    //   // 
-    //   if(!downvoteFlag){
-    //     const value = parseInt(score.innerHTML);
-    //     score.innerHTML = value - 1;
-    //     downvoteFlag = true;
-    //     upvoteFlag = false;
-    //   }
-    // });
-
-    // upvote.addEventListener("click", e => {
-    //   console.log("Upvote");
-    //   if(!upvoteFlag){
-    //     const value = parseInt(score.innerHTML);
-    //     score.innerHTML = value + 1;
-    //     upvoteFlag = true;
-    //     downvoteFlag = false;
-    //   }
-    // });
-    
     
   }
 
@@ -75,6 +50,9 @@ function pinClickHandler(e){
     const coordinates = e.lngLat;
     const drop = document.getElementById("drop");
     const issue = document.getElementById("new-issue");
+    const lng = document.getElementById("lng");
+    const lat = document.getElementById("lat");
+
 
     issue.style.display = "flex";
     drop.style.pointerEvents = "auto";
@@ -83,6 +61,9 @@ function pinClickHandler(e){
       issue.style.display = "none"
       drop.style.pointerEvents = "none";
     })
+
+    lat.value = coordinates.lat;
+    lng.value = coordinates.lng;
   }
 
   function init(){

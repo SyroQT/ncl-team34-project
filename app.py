@@ -1,27 +1,33 @@
-import json
-import re
+import os
 
-from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+from firebase_admin import db, credentials, initialize_app
+from dotenv import load_dotenv
+from werkzeug.utils import redirect
+
+load_dotenv()
+MAP_TOKEN = os.getenv("MAP_TOKEN")
+DB_URL = os.getenv("DB_URL")
 
 app = Flask(__name__)
 
-# Database creds
-mysql = SQLAlchemy()
-app.config["MYSQL_DATABASE_USER"] = "csc2033_team34"
-app.config["MYSQL_DATABASE_PASSWORD"] = "Lent2PepBeau"
-app.config["MYSQL_DATABASE_DB"] = "csc2033_team34"
-app.config["MYSQL_DATABASE_HOST"] = "cs-db.ncl.ac.uk"
-mysql.init_app(app)
+# Firestore setup
+# Docs https://www.freecodecamp.org/news/how-to-get-started-with-firebase-using-python/
+cred = credentials.Certificate("firebase_key.json")
+default_app = initialize_app(
+    cred,
+    {"databaseURL": DB_URL},
+)
+ref = db.reference("/")
 
 # Token for map API
-# Will have to put it in the env variable or smt
-token = "pk.eyJ1Ijoic3lyb3F0IiwiYSI6ImNrd2d1M2dwOTBzMHoyd21vaXUwemZsZHYifQ.qMKLv7M4w6lRtfaDopK73A"
+token = MAP_TOKEN
 
 # dummy data which should be retrieved from DB
 issues = [
     {  # Helix Sq
-        "location": [-1.6268, 54.9729],
+        "lng": -1.6268,
+        "lat": 54.9729,
         "color": "black",
         "id": 363,
         "description": "This is a description",
@@ -29,7 +35,8 @@ issues = [
         "score": 500,
     },
     {  # USB
-        "location": [-1.62494, 54.9735751],
+        "lng": -1.62494,
+        "lat": 54.9735751,
         "color": "blue",
         "id": 696,
         "description": "This is a description",
@@ -37,7 +44,8 @@ issues = [
         "score": 555,
     },
     {  # The Catalyst
-        "location": [-1.6244480090820115, 54.97322654028629],
+        "lng": -1.6244480090820115,
+        "lat": 54.97322654028629,
         "color": "blue",
         "id": 35,
         "description": "This is a description",
@@ -45,7 +53,8 @@ issues = [
         "score": 55,
     },
     {  # FDC
-        "location": [-1.6251856666991449, 54.973163909898304],
+        "lng": -1.6251856666991449,
+        "lat": 54.973163909898304,
         "color": "red",
         "id": 6,
         "description": "This is a description",
@@ -54,6 +63,7 @@ issues = [
     },
 ]
 categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]
+# ref.set({"issues": issues, "categories": categories})
 
 
 # Main view - for now an empty map
@@ -82,6 +92,14 @@ def register():
 # User view of the app
 @app.route("/user", methods=["POST", "GET"])
 def user():
+    # Get categories from DB
+    ref = db.reference("/categories")
+    categories = ref.get()
+
+    # Get issues from db
+    ref = db.reference("/issues")
+    issues = ref.get()
+
     return render_template(
         "user.html", token=token, issues=issues, categories=categories
     )
@@ -90,6 +108,14 @@ def user():
 # Admin view of the app
 @app.route("/admin", methods=["POST", "GET"])
 def admin():
+    # Get categories from DB
+    ref = db.reference("/categories")
+    categories = ref.get()
+
+    # Get issues from db
+    ref = db.reference("/issues")
+    issues = ref.get()
+
     return render_template(
         "admin.html", token=token, issues=issues, categories=categories
     )
@@ -98,8 +124,22 @@ def admin():
 # Place where new issue data is sent
 @app.route("/new_issue", methods=["POST"])
 def new_issue():
-    print(request.form)
-    return "New issue is taken care of"
+    ref = db.reference("/issues")
+    issues = ref.get()
+    id = 1 + len(issues)
+
+    new_issue = {
+        "category": request.form["category"],
+        "color": "black",
+        "description": request.form["description"],
+        "lng": request.form["lng"],
+        "lat": request.form["lat"],
+        "score": 1,
+        "id": id,
+    }
+
+    ref.push(new_issue)
+    return redirect(url_for("user"))
 
 
 # Place where new issue data is sent
@@ -116,4 +156,5 @@ def about():
 
 
 if __name__ == "__main__":
+
     app.run(debug=True)
