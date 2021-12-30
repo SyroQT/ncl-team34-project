@@ -137,6 +137,8 @@ src="{{url_for('static',filename='src/user.js')}}"
       <button class="btn mt-4"> 
         Submit
       </button>
+      <input type="hidden" name="lng" id="lng" />
+      <input type="hidden" name="lat" id="lat" />
     </form>
   </div>
 
@@ -185,9 +187,9 @@ src="{{url_for('static',filename='src/user.js')}}"
     }); 
 
     // Pin draw and setup
-    pins.forEach((pin) => {
+    for (let [key, pin] of Object.entries(pins)){
       const el = new mapboxgl.Marker({ color: pin.color })
-        .setLngLat(pin.location)
+        .setLngLat([pin.lng, pin.lat])
         .addTo(map);
       
         // Save the pin data for the element
@@ -196,7 +198,12 @@ src="{{url_for('static',filename='src/user.js')}}"
         }
         // Add the event listener
         el.getElement().addEventListener("click", pinClickHandler);
-    });
+    }
+
+
+    // pins.forEach((pin) => {
+
+    // });
   });
 </script>
 
