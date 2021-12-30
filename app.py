@@ -5,11 +5,19 @@ from firebase_admin import db, credentials, initialize_app
 from dotenv import load_dotenv
 from werkzeug.utils import redirect
 
+from users.forms import RegisterForm, LoginForm
+
 load_dotenv()
 MAP_TOKEN = os.getenv("MAP_TOKEN")
 DB_URL = os.getenv("DB_URL")
 
 app = Flask(__name__)
+mysql = MySQL()
+app.config['MYSQL_DATABASE_USER'] = "csc2033_team34"
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Lent2PepBeau'
+app.config['MYSQL_DATABASE_DB'] = 'csc2033_team34'
+app.config['MYSQL_DATABASE_HOST'] = 'cs-db.ncl.ac.uk'
+mysql.init_app(app)
 
 # Firestore setup
 # Docs https://www.freecodecamp.org/news/how-to-get-started-with-firebase-using-python/
@@ -63,6 +71,7 @@ issues = [
     },
 ]
 categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]
+# this deletes all data from db so be careful
 # ref.set({"issues": issues, "categories": categories})
 
 
@@ -74,7 +83,9 @@ def hello_world():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+
+    return render_template("login.html", form=form)
 
 
 # Logout handler
@@ -86,7 +97,14 @@ def logout():
 # Register route
 @app.route("/register", methods=["POST", "GET"])
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        print(request.form.get('email'))
+        print(request.form.get('password'))
+
+        return login()
+    return render_template("register.html", form=form)
 
 
 # User view of the app
