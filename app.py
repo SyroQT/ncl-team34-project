@@ -145,8 +145,15 @@ def new_issue():
 # Place where new issue data is sent
 @app.route("/score_cast", methods=["POST"])
 def score_cast():
-    print(request.form)
-    return "Your vote is now casted"
+    # TODO: track user ids to not allow users vote multiple times
+    ref = db.reference("/issues/")
+    issues = ref.get()
+
+    for k, v in issues.items():
+        if v["id"] == int(request.form["issue-id"]):
+            ref.child(k).update({"score": request.form["score"]})
+
+    return redirect(url_for("user"))
 
 
 # About page

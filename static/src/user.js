@@ -26,6 +26,34 @@ function pinClickHandler(e){
     description.innerHTML = element.getAttribute("data-description");
     category.innerHTML = element.getAttribute("data-category");
     score.innerHTML = element.getAttribute("data-score");
+
+
+
+    downvote.addEventListener('click', e => {
+      if (!downvoteFlag){
+        downvoteFlag = true;
+        upvoteFlag = false;
+        const newScore = document.getElementById("down-score");
+        const idInput = document.getElementById("down-issue-id-input");
+  
+        newScore.value = parseInt(score.innerHTML)-1;
+        idInput.value = element.getAttribute("data-id");
+        downvote.parentElement.submit();
+      }
+    });
+
+    upvote.addEventListener('click', e => {
+      if (!upvoteFlag){
+        upvoteFlag = true;
+        downvoteFlag = false;
+        const newScore = document.getElementById("up-score");
+        const idInput = document.getElementById("up-issue-id-input");
+  
+        newScore.value = parseInt(score.innerHTML)+1;
+        idInput.value = element.getAttribute("data-id");
+        upvote.parentElement.submit();
+      }
+    });
     
   }
 

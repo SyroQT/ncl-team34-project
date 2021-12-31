@@ -71,15 +71,19 @@ src="{{url_for('static',filename='src/user.js')}}"
     <p id="score"></p>
 
     <form action="{{url_for('score_cast')}}", method="POST" id="downvote">
-      <a id="downvote-a" href="#" onclick="document.getElementById('downvote').submit();">
+      <a id="downvote-a" href="#">
           <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
-      </a>  
+      </a>
+      <input type="hidden" name="issue-id" id="down-issue-id-input"/>  
+      <input type="hidden" name="score" id="down-score"/>  
     </form>
 
     <form action="{{url_for('score_cast')}}", method="POST" id="upvote">
-      <a id="upvote-a" href="#" onclick="document.getElementById('upvote').submit();">
+      <a id="upvote-a" href="#">
             <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
       </a>
+      <input type="hidden" name="issue-id" id="up-issue-id-input"/> 
+      <input type="hidden" name="score" id="up-score"/> 
     </form>
   </div>
 
