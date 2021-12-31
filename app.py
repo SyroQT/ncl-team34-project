@@ -115,8 +115,12 @@ def user():
     categories = ref.get()
 
     # Get issues from db
-    ref = db.reference("/issues")
+    ref = db.reference("/issues/")
     issues = ref.get()
+    if type(issues) == list:
+        issues = [i for i in issues if i]
+    else:
+        issues = {k: v for k, v in issues.items() if v is not None}
 
     return render_template(
         "user.html", token=token, issues=issues, categories=categories
@@ -127,13 +131,16 @@ def user():
 @app.route("/admin", methods=["POST", "GET"])
 def admin():
     # Get categories from DB
-    ref = db.reference("/categories")
+    ref = db.reference("/categories/")
     categories = ref.get()
 
     # Get issues from db
-    ref = db.reference("/issues")
+    ref = db.reference("/issues/")
     issues = ref.get()
-
+    if type(issues) == list:
+        issues = [i for i in issues if i]
+    else:
+        issues = {k: v for k, v in issues.items() if v is not None}
     return render_template(
         "admin.html", token=token, issues=issues, categories=categories
     )
@@ -144,6 +151,7 @@ def admin():
 def new_issue():
     ref = db.reference("/issues")
     issues = ref.get()
+    # TODO : needs a better way of calculating ids
     id = 1 + len(issues)
 
     new_issue = {
@@ -163,8 +171,27 @@ def new_issue():
 # Place where new issue data is sent
 @app.route("/score_cast", methods=["POST"])
 def score_cast():
-    print(request.form)
-    return "Your vote is now casted"
+    # TODO: track user ids to not allow users vote multiple times
+    ref = db.reference("/issues/")
+    issues = ref.get()
+
+    for k, v in issues.items():
+        if v["id"] == int(request.form["issue-id"]):
+            ref.child(k).update({"score": int(request.form["score"])})
+
+    return redirect(url_for("user"))
+
+
+# Deletes an issue
+@app.route("/delete_issue", methods=["POST"])
+def delete_issue():
+    ref = db.reference("/issues/")
+    issues = ref.get()
+    for k, v in issues.items():
+        if v["id"] == int(request.form["issue-id"]):
+            ref.child(k).set({})
+
+    return redirect(url_for("admin"))
 
 
 # About page

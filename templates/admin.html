@@ -33,7 +33,6 @@ please don't write your css, js, and html code in a html file.
   </div>
 
   <!-- Issue card -->
-  <!-- TODO add button to remove -->
   <div
     id="card"
     class="
@@ -80,7 +79,15 @@ please don't write your css, js, and html code in a html file.
     <!-- Botom part of the card -->
     <div class="vertical-flex">
       <p id="score"></p>
-      <a href="{{url_for('register')}}">Delete</a>
+      <form
+        action="{{url_for('delete_issue')}}"
+        ,
+        method="post"
+        id="delete-form"
+      >
+        <a href="#" , id="delete-btn">Delete</a>
+        <input type="hidden" name="issue-id" id="issue-id-delete" />
+      </form>
     </div>
   </div>
 
@@ -164,24 +171,16 @@ please don't write your css, js, and html code in a html file.
         Work at home, remote, is the new age of the job, every person can work
         at home....
       </p>
-      <div id="vote" class="flex justify-between ml-4 text-sm">
-        <div id="downvote">
-          <img
-            id="downvote-svg"
-            class="vote-btn"
-            src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}"
-            alt=""
-          />
-        </div>
-        <div id="upvote">
-          <img
-            id="upvote-svg"
-            class="vote-btn"
-            src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}"
-            alt=""
-          />
-        </div>
-      </div>
+      <div id="vote" class="flex justify-between ml-4 text-sm"></div>
+      <form
+        action="{{url_for('delete_issue')}}"
+        ,
+        method="post"
+        id="delete-form-card"
+      >
+        <a href="#" , id="delete-btn-card">Delete</a>
+        <input type="hidden" name="issue-id" id="issue-id-delete-card" />
+      </form>
     </div>
   </div>
 
@@ -243,9 +242,6 @@ please don't write your css, js, and html code in a html file.
 
 <!-- Event handler JS -->
 <script>
-  function deleteIssueHandler(e) {
-    console.log(e);
-  }
   // Function for the admin grid functionality
   function adminToolsHandler() {
     const drop = document.getElementById("drop");
@@ -296,11 +292,17 @@ please don't write your css, js, and html code in a html file.
             break;
 
           case "vote":
-            // elements[i].children[0].innerHTML =  document.getElementById("downvote").textContent;
-            // elements[i].children[1].innerHTML =  document.getElementById("upvote").textContent;
             elements[i].innerHTML = "<p>" + pin.score + "</p>";
-            // elements[i].children[0].innerHTML += "<p>" + pin.downvotes + "</p>" ;
-            // elements[i].children[1].innerHTML += "<p>" +  pin.upvotes + "</p>";
+            break;
+
+          case "delete-form-card":
+            const deleteFormBtn = elements[i].children[0];
+            const deleteFormInput = elements[i].children[1];
+            deleteFormBtn.addEventListener("click", (e) => {
+              deleteFormInput.value = pin.id;
+              elements[i].submit();
+            });
+
             break;
         }
       }
