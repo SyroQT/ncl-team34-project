@@ -28,32 +28,41 @@ function pinClickHandler(e){
     score.innerHTML = element.getAttribute("data-score");
 
 
+    if(downvote){
+      downvote.addEventListener('click', e => {
+        if (!downvoteFlag){
+          downvoteFlag = true;
+          upvoteFlag = false;
+          const newScore = document.getElementById("down-score");
+          const idInput = document.getElementById("down-issue-id-input");
+    
+          newScore.value = parseInt(score.innerHTML)-1;
+          idInput.value = element.getAttribute("data-id");
+          downvote.parentElement.submit();
+        }
+      });
 
-    downvote.addEventListener('click', e => {
-      if (!downvoteFlag){
-        downvoteFlag = true;
-        upvoteFlag = false;
-        const newScore = document.getElementById("down-score");
-        const idInput = document.getElementById("down-issue-id-input");
-  
-        newScore.value = parseInt(score.innerHTML)-1;
-        idInput.value = element.getAttribute("data-id");
-        downvote.parentElement.submit();
-      }
-    });
-
-    upvote.addEventListener('click', e => {
-      if (!upvoteFlag){
-        upvoteFlag = true;
-        downvoteFlag = false;
-        const newScore = document.getElementById("up-score");
-        const idInput = document.getElementById("up-issue-id-input");
-  
-        newScore.value = parseInt(score.innerHTML)+1;
-        idInput.value = element.getAttribute("data-id");
-        upvote.parentElement.submit();
-      }
-    });
+      upvote.addEventListener('click', e => {
+        if (!upvoteFlag){
+          upvoteFlag = true;
+          downvoteFlag = false;
+          const newScore = document.getElementById("up-score");
+          const idInput = document.getElementById("up-issue-id-input");
+    
+          newScore.value = parseInt(score.innerHTML)+1;
+          idInput.value = element.getAttribute("data-id");
+          upvote.parentElement.submit();
+        }
+      });
+    } else {
+      document.getElementById("delete-btn").addEventListener('click', e => {
+        const deleteForm = document.getElementById("delete-form");
+        const issueToDelete = document.getElementById("issue-id-delete");
+      
+        issueToDelete.value = element.getAttribute("data-id");
+        deleteForm.submit();
+      });
+    }
     
   }
 

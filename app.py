@@ -156,6 +156,19 @@ def score_cast():
     return redirect(url_for("user"))
 
 
+# Deletes an issue
+@app.route("/delete_issue", methods=["POST"])
+def delete_issue():
+    print(request.form)
+    ref = db.reference("/issues/")
+    issues = ref.get()
+    for k, v in issues.items():
+        if v["id"] == int(request.form["issue-id"]):
+            ref.child(k).set({})
+
+    return redirect(url_for("admin"))
+
+
 # About page
 @app.route("/about")
 def about():
