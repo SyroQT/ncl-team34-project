@@ -151,7 +151,7 @@ def score_cast():
 
     for k, v in issues.items():
         if v["id"] == int(request.form["issue-id"]):
-            ref.child(k).update({"score": request.form["score"]})
+            ref.child(k).update({"score": int(request.form["score"])})
 
     return redirect(url_for("user"))
 
