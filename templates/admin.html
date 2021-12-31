@@ -79,9 +79,14 @@ please don't write your css, js, and html code in a html file.
     <!-- Botom part of the card -->
     <div class="vertical-flex">
       <p id="score"></p>
-      <form action="{{url_for('delete_issue')}}", method="post" id="delete-form">
-      <a href="#", id="delete-btn">Delete</a>
-      <input type="hidden" name="issue-id" id="issue-id-delete"/> 
+      <form
+        action="{{url_for('delete_issue')}}"
+        ,
+        method="post"
+        id="delete-form"
+      >
+        <a href="#" , id="delete-btn">Delete</a>
+        <input type="hidden" name="issue-id" id="issue-id-delete" />
       </form>
     </div>
   </div>
@@ -166,11 +171,15 @@ please don't write your css, js, and html code in a html file.
         Work at home, remote, is the new age of the job, every person can work
         at home....
       </p>
-      <div id="vote" class="flex justify-between ml-4 text-sm">
-      </div>
-      <form action="{{url_for('delete_issue')}}", method="post" id="delete-form-card">
-        <a href="#", id="delete-btn-card">Delete</a>
-        <input type="hidden" name="issue-id" id="issue-id-delete-card"/> 
+      <div id="vote" class="flex justify-between ml-4 text-sm"></div>
+      <form
+        action="{{url_for('delete_issue')}}"
+        ,
+        method="post"
+        id="delete-form-card"
+      >
+        <a href="#" , id="delete-btn-card">Delete</a>
+        <input type="hidden" name="issue-id" id="issue-id-delete-card" />
       </form>
     </div>
   </div>
@@ -289,12 +298,12 @@ please don't write your css, js, and html code in a html file.
           case "delete-form-card":
             const deleteFormBtn = elements[i].children[0];
             const deleteFormInput = elements[i].children[1];
-            deleteFormBtn.addEventListener('click', e => {
+            deleteFormBtn.addEventListener("click", (e) => {
               deleteFormInput.value = pin.id;
               elements[i].submit();
             });
 
-            break
+            break;
         }
       }
 

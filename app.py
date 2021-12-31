@@ -97,8 +97,12 @@ def user():
     categories = ref.get()
 
     # Get issues from db
-    ref = db.reference("/issues")
+    ref = db.reference("/issues/")
     issues = ref.get()
+    if type(issues) == list:
+        issues = [i for i in issues if i]
+    else:
+        issues = {k: v for k, v in issues.items() if v is not None}
 
     return render_template(
         "user.html", token=token, issues=issues, categories=categories
@@ -109,13 +113,16 @@ def user():
 @app.route("/admin", methods=["POST", "GET"])
 def admin():
     # Get categories from DB
-    ref = db.reference("/categories")
+    ref = db.reference("/categories/")
     categories = ref.get()
 
     # Get issues from db
-    ref = db.reference("/issues")
+    ref = db.reference("/issues/")
     issues = ref.get()
-
+    if type(issues) == list:
+        issues = [i for i in issues if i]
+    else:
+        issues = {k: v for k, v in issues.items() if v is not None}
     return render_template(
         "admin.html", token=token, issues=issues, categories=categories
     )
@@ -126,6 +133,7 @@ def admin():
 def new_issue():
     ref = db.reference("/issues")
     issues = ref.get()
+    # TODO : needs a better way of calculating ids
     id = 1 + len(issues)
 
     new_issue = {
@@ -159,7 +167,6 @@ def score_cast():
 # Deletes an issue
 @app.route("/delete_issue", methods=["POST"])
 def delete_issue():
-    print(request.form)
     ref = db.reference("/issues/")
     issues = ref.get()
     for k, v in issues.items():
