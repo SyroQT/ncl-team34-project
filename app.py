@@ -1,23 +1,19 @@
-import os
+import os, requests
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from firebase_admin import db, credentials, initialize_app
 from dotenv import load_dotenv
 from werkzeug.utils import redirect
+from werkzeug.wrappers import response
 
-from users.forms import RegisterForm, LoginForm
+# from users.forms import RegisterForm, LoginForm
 
 load_dotenv()
 MAP_TOKEN = os.getenv("MAP_TOKEN")
 DB_URL = os.getenv("DB_URL")
+API_KEY = os.getenv("API_KEY")
 
 app = Flask(__name__)
-mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = "csc2033_team34"
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Lent2PepBeau'
-app.config['MYSQL_DATABASE_DB'] = 'csc2033_team34'
-app.config['MYSQL_DATABASE_HOST'] = 'cs-db.ncl.ac.uk'
-mysql.init_app(app)
 
 # Firestore setup
 # Docs https://www.freecodecamp.org/news/how-to-get-started-with-firebase-using-python/
@@ -83,9 +79,35 @@ def hello_world():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    form = LoginForm()
+    """auth is being implemented from this website
+    https://blog.icodes.tech/posts/python-firebase-authentication.html
+    """
+    if request.method == "POST":
 
-    return render_template("login.html", form=form)
+        details = {
+            "email": request.form["email"],
+            "password": request.form["password"],
+            "returnSecureToken": True,
+        }
+        # Post request
+        r = requests.post(
+            "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={}".format(
+                API_KEY
+            ),
+            data=details,
+        )
+        # check for errors
+        if "error" in r.json().keys():
+            response = {"status": "error", "message": r.json()["error"]["message"]}
+        # success
+        if "idToken" in r.json().keys():
+            response = {"status": "success", "idToken": r.json()["idToken"]}
+        print(response)
+
+        # TODO: check if user or admin
+        return redirect(url_for("user"))
+
+    return render_template("login.html")
 
 
 # Logout handler
@@ -97,19 +119,40 @@ def logout():
 # Register route
 @app.route("/register", methods=["POST", "GET"])
 def register():
-    form = RegisterForm()
 
-    if form.validate_on_submit():
-        print(request.form.get('email'))
-        print(request.form.get('password'))
+    if request.method == "POST":
+        # TODO: validation of data
+        details = {
+            "email": request.form["email"],
+            "password": request.form["password"],
+            "returnSecureToken": True,
+        }
+        # send post request
+        r = requests.post(
+            "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={}".format(
+                API_KEY
+            ),
+            data=details,
+        )
+        # check for errors in result
+        if "error" in r.json().keys():
+            response = {"status": "error", "message": r.json()["error"]["message"]}
+        # if the registration succeeded
+        if "idToken" in r.json().keys():
+            response = {"status": "success", "idToken": r.json()["idToken"]}
 
-        return login()
-    return render_template("register.html", form=form)
+        print(response)
+
+        # TODO check if user or admin
+        return redirect(url_for("user"))
+
+    return render_template("register.html")
 
 
 # User view of the app
 @app.route("/user", methods=["POST", "GET"])
 def user():
+
     # Get categories from DB
     ref = db.reference("/categories")
     categories = ref.get()

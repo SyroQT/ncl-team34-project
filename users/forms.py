@@ -9,9 +9,22 @@ class RegisterForm(FlaskForm):
     lastname = StringField(validators=[Required()])
     email = StringField(validators=[Required(), Email()])
     phone = StringField(validators=[Required()])
-    password = PasswordField(validators=[Required(), Length(min=6, max=12,
-                                                            message='Password must be between 6 and 12 characters in length.')])
-    password_confirm = PasswordField(validators=[Required(), EqualTo('password', message='Both password fields must be equal!')])
+    password = PasswordField(
+        validators=[
+            Required(),
+            Length(
+                min=6,
+                max=12,
+                message="Password must be between 6 and 12 characters in length.",
+            ),
+        ]
+    )
+    password_confirm = PasswordField(
+        validators=[
+            Required(),
+            EqualTo("password", message="Both password fields must be equal!"),
+        ]
+    )
     submit = SubmitField()
 
 
