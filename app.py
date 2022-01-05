@@ -1,3 +1,4 @@
+from logging import raiseExceptions
 import os, requests, json
 from functools import wraps
 
@@ -5,6 +6,17 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 from firebase_admin import db, credentials, initialize_app, auth
 from dotenv import load_dotenv
 from werkzeug.utils import redirect
+
+# TODO:
+# refactor the code
+# style it a bit
+# error handling
+# error pages
+# about page
+
+# proper id system for issues
+# testing
+
 
 # from users.forms import RegisterForm, LoginForm
 
@@ -76,9 +88,9 @@ def get_role_from_id(uid):
     """Checks wich role is the given token user"""
     ref = db.reference("/roles/")
     db_roles = ref.get()
-    if uid in db_roles["user"]:
+    if uid in list(db_roles["user"].values()):
         return "user"
-    elif uid in db_roles["admin"]:
+    elif uid in list(db_roles["admin"].values()):
         return "admin"
 
 
@@ -106,6 +118,8 @@ def requires_roles(role=None):
 
                     elif verif["uid"] in list(db_roles[role].values()):
                         return f(*args, **kwargs)
+                    else:
+                        raiseExceptions("TypeError")
 
                 except:
                     # TODO: create the template
