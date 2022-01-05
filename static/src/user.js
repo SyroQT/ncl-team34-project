@@ -27,30 +27,42 @@ function pinClickHandler(e){
     category.innerHTML = element.getAttribute("data-category");
     score.innerHTML = element.getAttribute("data-score");
 
-    // // Voting handlers
-    // downvote.addEventListener("click", e => {
-    //   console.log("Downvote");
-    //   // first click
-    //   // unclick
-    //   // 
-    //   if(!downvoteFlag){
-    //     const value = parseInt(score.innerHTML);
-    //     score.innerHTML = value - 1;
-    //     downvoteFlag = true;
-    //     upvoteFlag = false;
-    //   }
-    // });
 
-    // upvote.addEventListener("click", e => {
-    //   console.log("Upvote");
-    //   if(!upvoteFlag){
-    //     const value = parseInt(score.innerHTML);
-    //     score.innerHTML = value + 1;
-    //     upvoteFlag = true;
-    //     downvoteFlag = false;
-    //   }
-    // });
+    if(downvote){
+      downvote.addEventListener('click', e => {
+        if (!downvoteFlag){
+          downvoteFlag = true;
+          upvoteFlag = false;
+          const newScore = document.getElementById("down-score");
+          const idInput = document.getElementById("down-issue-id-input");
     
+          newScore.value = parseInt(score.innerHTML)-1;
+          idInput.value = element.getAttribute("data-id");
+          downvote.parentElement.submit();
+        }
+      });
+
+      upvote.addEventListener('click', e => {
+        if (!upvoteFlag){
+          upvoteFlag = true;
+          downvoteFlag = false;
+          const newScore = document.getElementById("up-score");
+          const idInput = document.getElementById("up-issue-id-input");
+    
+          newScore.value = parseInt(score.innerHTML)+1;
+          idInput.value = element.getAttribute("data-id");
+          upvote.parentElement.submit();
+        }
+      });
+    } else {
+      document.getElementById("delete-btn").addEventListener('click', e => {
+        const deleteForm = document.getElementById("delete-form");
+        const issueToDelete = document.getElementById("issue-id-delete");
+      
+        issueToDelete.value = element.getAttribute("data-id");
+        deleteForm.submit();
+      });
+    }
     
   }
 
@@ -75,6 +87,9 @@ function pinClickHandler(e){
     const coordinates = e.lngLat;
     const drop = document.getElementById("drop");
     const issue = document.getElementById("new-issue");
+    const lng = document.getElementById("lng");
+    const lat = document.getElementById("lat");
+
 
     issue.style.display = "flex";
     drop.style.pointerEvents = "auto";
@@ -83,6 +98,9 @@ function pinClickHandler(e){
       issue.style.display = "none"
       drop.style.pointerEvents = "none";
     })
+
+    lat.value = coordinates.lat;
+    lng.value = coordinates.lng;
   }
 
   function init(){

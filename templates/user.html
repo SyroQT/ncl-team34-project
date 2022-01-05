@@ -71,15 +71,19 @@ src="{{url_for('static',filename='src/user.js')}}"
     <p id="score"></p>
 
     <form action="{{url_for('score_cast')}}", method="POST" id="downvote">
-      <a id="downvote-a" href="#" onclick="document.getElementById('downvote').submit();">
+      <a id="downvote-a" href="#">
           <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
-      </a>  
+      </a>
+      <input type="hidden" name="issue-id" id="down-issue-id-input"/>  
+      <input type="hidden" name="score" id="down-score"/>  
     </form>
 
     <form action="{{url_for('score_cast')}}", method="POST" id="upvote">
-      <a id="upvote-a" href="#" onclick="document.getElementById('upvote').submit();">
+      <a id="upvote-a" href="#">
             <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
       </a>
+      <input type="hidden" name="issue-id" id="up-issue-id-input"/> 
+      <input type="hidden" name="score" id="up-score"/> 
     </form>
   </div>
 
@@ -137,6 +141,8 @@ src="{{url_for('static',filename='src/user.js')}}"
       <button class="btn mt-4"> 
         Submit
       </button>
+      <input type="hidden" name="lng" id="lng" />
+      <input type="hidden" name="lat" id="lat" />
     </form>
   </div>
 
@@ -185,9 +191,9 @@ src="{{url_for('static',filename='src/user.js')}}"
     }); 
 
     // Pin draw and setup
-    pins.forEach((pin) => {
-      const el = new mapboxgl.Marker({ color: pin.color })
-        .setLngLat(pin.location)
+    for (let [key, pin] of Object.entries(pins)){
+      const el = new mapboxgl.Marker({ 'color': pin.color })
+        .setLngLat([pin.lng, pin.lat])
         .addTo(map);
       
         // Save the pin data for the element
@@ -196,7 +202,12 @@ src="{{url_for('static',filename='src/user.js')}}"
         }
         // Add the event listener
         el.getElement().addEventListener("click", pinClickHandler);
-    });
+    }
+
+
+    // pins.forEach((pin) => {
+
+    // });
   });
 </script>
 

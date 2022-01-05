@@ -1,7 +1,7 @@
 flask
 Jinja2
-Flask-SQLAlchemy
-SQLAlchemy
-WTForms
+python-dotenv
+firebase-admin
 Flask-WTF
 email-validator
+WTForms
