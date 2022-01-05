@@ -24,9 +24,10 @@ load_dotenv()
 MAP_TOKEN = os.getenv("MAP_TOKEN")
 DB_URL = os.getenv("DB_URL")
 API_KEY = os.getenv("API_KEY")
+FLASK_SECRET = os.getenv("FLASK_SECRET")
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "secret"
+app.config["SECRET_KEY"] = FLASK_SECRET
 
 # Firestore setup
 # Docs https://www.freecodecamp.org/news/how-to-get-started-with-firebase-using-python/
