@@ -1,7 +1,7 @@
 from logging import raiseExceptions
 import os, requests, json
 from functools import wraps
-
+from users.forms import RegisterForm, LoginForm
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from firebase_admin import db, credentials, initialize_app, auth
 from dotenv import load_dotenv
@@ -188,6 +188,7 @@ def logout():
 # Register route
 @app.route("/register", methods=["POST", "GET"])
 def register():
+    form = RegisterForm()
 
     if request.method == "POST":
         # TODO: validation of data
