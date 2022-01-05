@@ -1,10 +1,10 @@
-import os, requests
+import os, requests, json
+from functools import wraps
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-from firebase_admin import db, credentials, initialize_app
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from firebase_admin import db, credentials, initialize_app, auth
 from dotenv import load_dotenv
 from werkzeug.utils import redirect
-from werkzeug.wrappers import response
 
 # from users.forms import RegisterForm, LoginForm
 
@@ -14,6 +14,7 @@ DB_URL = os.getenv("DB_URL")
 API_KEY = os.getenv("API_KEY")
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "secret"
 
 # Firestore setup
 # Docs https://www.freecodecamp.org/news/how-to-get-started-with-firebase-using-python/
@@ -70,16 +71,65 @@ categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]
 # this deletes all data from db so be careful
 # ref.set({"issues": issues, "categories": categories})
 
+# Helper func
+def get_role_from_id(uid):
+    """Checks wich role is the given token user"""
+    ref = db.reference("/roles/")
+    db_roles = ref.get()
+    if uid in db_roles["user"]:
+        return "user"
+    elif uid in db_roles["admin"]:
+        return "admin"
 
-# Main view - for now an empty map
+
+# Decorators
+def requires_roles(role=None):
+    """Checks if the user session contains a valid token and if it has the correct role.
+    If no role is given then only checks for the valid token.
+    """
+
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+
+            try:
+                verif = auth.verify_id_token(json.loads(session["idToken"]))
+            except TypeError:
+                verif = {}
+
+            if "uid" in verif.keys():
+                try:
+                    ref = db.reference("/roles/")
+                    db_roles = ref.get()
+                    if not role:
+                        return f(*args, **kwargs)
+
+                    elif verif["uid"] in list(db_roles[role].values()):
+                        return f(*args, **kwargs)
+
+                except:
+                    # TODO: create the template
+                    # return render_template("403.html")
+                    return "Unauthorized"
+            else:
+                # TODO: create the template
+                # return render_template("403.html")
+                return "Unauthorized"
+
+        return wrapped
+
+    return wrapper
+
+
+# Main view redirects to login
 @app.route("/")
-def hello_world():
-    return render_template("index.html")
+def index():
+    return redirect("login")
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    """auth is being implemented from this website
+    """auth is being implemented according to this website
     https://blog.icodes.tech/posts/python-firebase-authentication.html
     """
     if request.method == "POST":
@@ -89,7 +139,7 @@ def login():
             "password": request.form["password"],
             "returnSecureToken": True,
         }
-        # Post request
+        # Post request to firebase api
         r = requests.post(
             "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={}".format(
                 API_KEY
@@ -97,23 +147,28 @@ def login():
             data=details,
         )
         # check for errors
+        # TODO error handling
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
+
         # success
         if "idToken" in r.json().keys():
             response = {"status": "success", "idToken": r.json()["idToken"]}
-        print(response)
+            session["idToken"] = json.dumps(response["idToken"])
 
-        # TODO: check if user or admin
-        return redirect(url_for("user"))
+            verif = auth.verify_id_token(response["idToken"])
+            user_type = get_role_from_id(verif["uid"])
+            return redirect(url_for(user_type))
 
     return render_template("login.html")
 
 
 # Logout handler
 @app.route("/logout")
+@requires_roles()
 def logout():
-    return "Logout"
+    session["idToken"] = None
+    return redirect("login")
 
 
 # Register route
@@ -127,32 +182,36 @@ def register():
             "password": request.form["password"],
             "returnSecureToken": True,
         }
-        # send post request
+        # send post request to firebase api
         r = requests.post(
             "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={}".format(
                 API_KEY
             ),
             data=details,
         )
-        # check for errors in result
+        # check for errors in result]\
+        # TODO error handling
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
         # if the registration succeeded
         if "idToken" in r.json().keys():
             response = {"status": "success", "idToken": r.json()["idToken"]}
+            session["idToken"] = json.dumps(response["idToken"])
 
-        print(response)
+            # save int the db that a new user is registered
+            verif = auth.verify_id_token(response["idToken"])
+            ref = db.reference("/roles/user/")
+            ref.push(verif["uid"])
 
-        # TODO check if user or admin
-        return redirect(url_for("user"))
+            return redirect(url_for("user"))
 
     return render_template("register.html")
 
 
 # User view of the app
 @app.route("/user", methods=["POST", "GET"])
+@requires_roles("user")
 def user():
-
     # Get categories from DB
     ref = db.reference("/categories")
     categories = ref.get()
@@ -172,6 +231,7 @@ def user():
 
 # Admin view of the app
 @app.route("/admin", methods=["POST", "GET"])
+@requires_roles("admin")
 def admin():
     # Get categories from DB
     ref = db.reference("/categories/")
@@ -184,6 +244,7 @@ def admin():
         issues = [i for i in issues if i]
     else:
         issues = {k: v for k, v in issues.items() if v is not None}
+
     return render_template(
         "admin.html", token=token, issues=issues, categories=categories
     )
@@ -191,6 +252,7 @@ def admin():
 
 # Place where new issue data is sent
 @app.route("/new_issue", methods=["POST"])
+@requires_roles("user")
 def new_issue():
     ref = db.reference("/issues")
     issues = ref.get()
@@ -213,6 +275,7 @@ def new_issue():
 
 # Place where new issue data is sent
 @app.route("/score_cast", methods=["POST"])
+@requires_roles("user")
 def score_cast():
     # TODO: track user ids to not allow users vote multiple times
     ref = db.reference("/issues/")
@@ -227,6 +290,7 @@ def score_cast():
 
 # Deletes an issue
 @app.route("/delete_issue", methods=["POST"])
+@requires_roles("admin")
 def delete_issue():
     ref = db.reference("/issues/")
     issues = ref.get()
