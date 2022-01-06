@@ -1,11 +1,14 @@
-from logging import raiseExceptions
-import os, requests, json
-from functools import wraps
+import json
+import os
+import requests
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from firebase_admin import db, credentials, initialize_app, auth
 from dotenv import load_dotenv
+from firebase_admin import db, credentials, initialize_app, auth
+from flask import Flask, render_template, request, url_for, session
 from werkzeug.utils import redirect
+
+
+from Functions import requiresRoles, getRoleFromID
 
 # TODO:
 # refactor the code
@@ -19,6 +22,7 @@ from werkzeug.utils import redirect
 
 
 # from users.forms import RegisterForm, LoginForm
+
 
 load_dotenv()
 MAP_TOKEN = os.getenv("MAP_TOKEN")
@@ -36,7 +40,7 @@ default_app = initialize_app(
     cred,
     {"databaseURL": DB_URL},
 )
-ref = db.reference("/")
+ref = db.reference(path="/")
 
 # Token for map API
 token = MAP_TOKEN
@@ -81,59 +85,9 @@ issues = [
     },
 ]
 categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]
+
 # this deletes all data from db so be careful
 # ref.set({"issues": issues, "categories": categories})
-
-# Helper func
-def get_role_from_id(uid):
-    """Checks wich role is the given token user"""
-    ref = db.reference("/roles/")
-    db_roles = ref.get()
-    if uid in list(db_roles["user"].values()):
-        return "user"
-    elif uid in list(db_roles["admin"].values()):
-        return "admin"
-
-
-# Decorators
-def requires_roles(role=None):
-    """Checks if the user session contains a valid token and if it has the correct role.
-    If no role is given then only checks for the valid token.
-    """
-
-    def wrapper(f):
-        @wraps(f)
-        def wrapped(*args, **kwargs):
-
-            try:
-                verif = auth.verify_id_token(json.loads(session["idToken"]))
-            except TypeError:
-                verif = {}
-
-            if "uid" in verif.keys():
-                try:
-                    ref = db.reference("/roles/")
-                    db_roles = ref.get()
-                    if not role:
-                        return f(*args, **kwargs)
-
-                    elif verif["uid"] in list(db_roles[role].values()):
-                        return f(*args, **kwargs)
-                    else:
-                        raiseExceptions("TypeError")
-
-                except:
-                    # TODO: create the template
-                    # return render_template("403.html")
-                    return "Unauthorized"
-            else:
-                # TODO: create the template
-                # return render_template("403.html")
-                return "Unauthorized"
-
-        return wrapped
-
-    return wrapper
 
 
 # Main view redirects to login
@@ -172,7 +126,7 @@ def login():
             session["idToken"] = json.dumps(response["idToken"])
 
             verif = auth.verify_id_token(response["idToken"])
-            user_type = get_role_from_id(verif["uid"])
+            user_type = getRoleFromID.get_role_from_id(verif["uid"])
             return redirect(url_for(user_type))
 
     return render_template("login.html")
@@ -180,7 +134,7 @@ def login():
 
 # Logout handler
 @app.route("/logout")
-@requires_roles()
+@requiresRoles.requires_roles()
 def logout():
     session["idToken"] = None
     return redirect("login")
@@ -189,7 +143,6 @@ def logout():
 # Register route
 @app.route("/register", methods=["POST", "GET"])
 def register():
-
     if request.method == "POST":
         # TODO: validation of data
         details = {
@@ -225,7 +178,7 @@ def register():
 
 # User view of the app
 @app.route("/user", methods=["POST", "GET"])
-@requires_roles("user")
+@requiresRoles.requires_roles("user")
 def user():
     # Get categories from DB
     ref = db.reference("/categories")
@@ -246,7 +199,7 @@ def user():
 
 # Admin view of the app
 @app.route("/admin", methods=["POST", "GET"])
-@requires_roles("admin")
+@requiresRoles.requires_roles("admin")
 def admin():
     # Get categories from DB
     ref = db.reference("/categories/")
@@ -267,7 +220,7 @@ def admin():
 
 # Place where new issue data is sent
 @app.route("/new_issue", methods=["POST"])
-@requires_roles("user")
+@requiresRoles.requires_roles("user")
 def new_issue():
     ref = db.reference("/issues")
     issues = ref.get()
@@ -290,7 +243,7 @@ def new_issue():
 
 # Place where new issue data is sent
 @app.route("/score_cast", methods=["POST"])
-@requires_roles("user")
+@requiresRoles.requires_roles("user")
 def score_cast():
     # TODO: track user ids to not allow users vote multiple times
     ref = db.reference("/issues/")
@@ -305,7 +258,7 @@ def score_cast():
 
 # Deletes an issue
 @app.route("/delete_issue", methods=["POST"])
-@requires_roles("admin")
+@requiresRoles.requires_roles("admin")
 def delete_issue():
     ref = db.reference("/issues/")
     issues = ref.get()
@@ -323,5 +276,4 @@ def about():
 
 
 if __name__ == "__main__":
-
     app.run(debug=True)
