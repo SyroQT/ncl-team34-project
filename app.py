@@ -160,6 +160,7 @@ def login():
                 API_KEY
             ),
             data=details,
+            verify=True,
         )
         # check for errors
         # TODO error handling
@@ -203,6 +204,7 @@ def register():
                 API_KEY
             ),
             data=details,
+            verify=True,
         )
         # check for errors in result]\
         # TODO error handling
@@ -269,14 +271,18 @@ def admin():
 @app.route("/new_issue", methods=["POST"])
 @requires_roles("user")
 def new_issue():
-    ref = db.reference("/issues")
-    issues = ref.get()
+    issue_ref = db.reference("/issues")
+    issues = issue_ref.get()
+
+    id_ref = db.reference("/issue-id-counter")
+    issue_id = id_ref.get()
+
     # TODO : needs a better way of calculating ids
-    id = 1 + len(issues)
+    id = 1 + int(issue_id)
 
     new_issue = {
         "category": request.form["category"],
-        "color": "black",
+        "color": "orange",
         "description": request.form["description"],
         "lng": request.form["lng"],
         "lat": request.form["lat"],
@@ -284,7 +290,9 @@ def new_issue():
         "id": id,
     }
 
-    ref.push(new_issue)
+    issue_ref.push(new_issue)
+    id_ref.set(id)
+
     return redirect(url_for("user"))
 
 
