@@ -29,18 +29,22 @@ def requires_roles(role=None):
                         return f(*args, **kwargs)
 
                     elif verif["uid"] in list(db_roles[role].values()):
+                        print(
+                            verif["uid"] in list(db_roles[role].values()),
+                            db_roles,
+                            "\n" + role,
+                        )
                         return f(*args, **kwargs)
                     else:
                         raiseExceptions("TypeError")
-
                 except:
                     # TODO: create the template
                     # return render_template("403.html")
-                    return "Unauthorized"
+                    return "Unauthorized 1"
             else:
                 # TODO: create the template
                 # return render_template("403.html")
-                return "Unauthorized"
+                return "Unauthorized 2"
 
         return wrapped
 

@@ -86,8 +86,9 @@ categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]
 if __name__ == "__main__":
     from users.views import users_blueprint
     from admins.views import admins_blueprints
-    from StandardPages.views import standardPages_blueprint
+    from standard.views import standard_blueprint
+
     app.register_blueprint(users_blueprint)
     app.register_blueprint(admins_blueprints)
-    app.register_blueprint(standardPages_blueprint)
+    app.register_blueprint(standard_blueprint)
     app.run(debug=True)

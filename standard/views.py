@@ -1,28 +1,25 @@
-import json
 import os
-from flask.helpers import url_for
+import json
 
 import requests
 from dotenv import load_dotenv
-from flask import Blueprint, redirect, request, render_template, session
-from firebase_admin import db, credentials, initialize_app, auth
+from firebase_admin import auth, db
+from flask import Blueprint, request, session, redirect, url_for, render_template
 
-standard_blueprint = Blueprint("standard_blueprint", __name__)
-
+standard_blueprint = Blueprint("standard", __name__, template_folder="templates")
 
 load_dotenv()
-MAP_TOKEN = os.getenv("MAP_TOKEN")
-DB_URL = os.getenv("DB_URL")
 API_KEY = os.getenv("API_KEY")
-FLASK_SECRET = os.getenv("FLASK_SECRET")
 
 # Main view redirects to login
+# TODO : Index page
 @standard_blueprint.route("/")
 def index():
     return redirect("login")
 
 
 # About page
+# TODO : about page
 @standard_blueprint.route("/about")
 def about():
     return "About"
@@ -44,7 +41,6 @@ def register():
                 API_KEY
             ),
             data=details,
-            verify=True,
         )
         # check for errors in result]\
         # TODO error handling
@@ -60,6 +56,6 @@ def register():
             ref = db.reference("/roles/user/")
             ref.push(verif["uid"])
 
-            return redirect(url_for("user"))
+            return redirect(url_for("users.user"))
 
     return render_template("register.html")

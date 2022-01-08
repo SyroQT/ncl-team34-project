@@ -1,12 +1,17 @@
+import os
+
 from firebase_admin import db
+from dotenv import load_dotenv
 from flask import Blueprint, render_template, redirect, url_for, request
 
 from Functions import requiresRoles
 
 
-admins_blueprints = Blueprint('admins', __name__, template_folder='templates')
+admins_blueprints = Blueprint("admins", __name__, template_folder="templates")
 
-from app import token
+load_dotenv()
+MAP_TOKEN = os.getenv("MAP_TOKEN")
+
 # Deletes an issue
 @admins_blueprints.route("/delete_issue", methods=["POST"])
 @requiresRoles.requires_roles("admin")
@@ -17,7 +22,7 @@ def delete_issue():
         if v["id"] == int(request.form["issue-id"]):
             ref.child(k).set({})
 
-    return redirect(url_for("admin"))
+    return redirect(url_for("admins.admin"))
 
 
 # Admin view of the app
@@ -37,5 +42,5 @@ def admin():
         issues = {k: v for k, v in issues.items() if v is not None}
 
     return render_template(
-        "admin.html", token=token, issues=issues, categories=categories
+        "admin.html", token=MAP_TOKEN, issues=issues, categories=categories
     )
