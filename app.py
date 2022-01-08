@@ -34,6 +34,7 @@ default_app = initialize_app(
 )
 ref = db.reference(path="/")
 
+
 # Token for map API
 token = MAP_TOKEN
 
