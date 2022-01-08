@@ -1,17 +1,20 @@
+import os
 import json
 
 import requests
 from firebase_admin import auth, db
+from dotenv import load_dotenv
 from flask import session, redirect, render_template, request, url_for, Blueprint
 
 from Functions import requiresRoles, getRoleFromID
 
 
 # CONFIG
-users_blueprint = Blueprint('users', __name__, template_folder='templates')
+users_blueprint = Blueprint("users", __name__, template_folder="templates")
 
-from app import API_KEY, token
-
+load_dotenv()
+MAP_TOKEN = os.getenv("MAP_TOKEN")
+API_KEY = os.getenv("API_KEY")
 
 # Place where new issue data is sent
 @users_blueprint.route("/new_issue", methods=["POST"])
@@ -33,7 +36,7 @@ def new_issue():
     }
 
     ref.push(new_issue)
-    return redirect(url_for("user"))
+    return redirect(url_for("users.user"))
 
 
 # Place where new issue data is sent
@@ -48,7 +51,7 @@ def score_cast():
         if v["id"] == int(request.form["issue-id"]):
             ref.child(k).update({"score": int(request.form["score"])})
 
-    return redirect(url_for("user"))
+    return redirect(url_for("users.user"))
 
 
 # User view of the app
@@ -68,7 +71,7 @@ def user():
         issues = {k: v for k, v in issues.items() if v is not None}
 
     return render_template(
-        "user.html", token=token, issues=issues, categories=categories
+        "user.html", token=MAP_TOKEN, issues=issues, categories=categories
     )
 
 
@@ -104,6 +107,11 @@ def login():
 
             verif = auth.verify_id_token(response["idToken"])
             user_type = getRoleFromID.get_role_from_id(verif["uid"])
+            if user_type == "user":
+                user_type = "users.user"
+            else:
+                user_type = "admins.admin"
+            print(user_type)
             return redirect(url_for(user_type))
 
     return render_template("login.html")
@@ -111,9 +119,7 @@ def login():
 
 # User logout view
 @users_blueprint.route("/logout")
-@requiresRoles.requires_roles('user', 'admin')
+@requiresRoles.requires_roles()
 def logout():
     session["idToken"] = None
     return redirect("login")
-
-
