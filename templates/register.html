@@ -118,6 +118,9 @@
       <!-- Bottom part -->
       <div class="flex flex-row justify-around">
         <button class="next-btn" type="submit">Next</button>
+        {% if errors %}
+        <p class="mt-5 text-red-800"><b>{{errors}}</b></p>
+        {% endif %}
       </div>
     </form>
   </div>

@@ -4,7 +4,7 @@ import json
 import requests
 from firebase_admin import auth, db
 from dotenv import load_dotenv
-from flask import session, redirect, render_template, request, url_for, Blueprint
+from flask import session, redirect, render_template, request, url_for, Blueprint, flash
 
 from Functions import requiresRoles, getRoleFromID
 
@@ -78,6 +78,8 @@ def user():
 # User login view
 @users_blueprint.route("/login", methods=["POST", "GET"])
 def login():
+    # TODO make to accept error messages
+    # Change register the sa,me
     """auth is being implemented according to this website
     https://blog.icodes.tech/posts/python-firebase-authentication.html
     """
@@ -96,9 +98,9 @@ def login():
             data=details,
         )
         # check for errors
-        # TODO error handling
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
+            return render_template("login.html", errors=response["message"])
 
         # success
         if "idToken" in r.json().keys():
@@ -111,10 +113,9 @@ def login():
                 user_type = "users.user"
             else:
                 user_type = "admins.admin"
-            print(user_type)
             return redirect(url_for(user_type))
-
-    return render_template("login.html")
+    # Error variable cvhange login
+    return render_template("login.html", errors=None)
 
 
 # User logout view
