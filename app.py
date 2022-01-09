@@ -1,25 +1,19 @@
 import os
 
 from dotenv import load_dotenv
-from firebase_admin import db, credentials, initialize_app, auth
+from firebase_admin import db, credentials, initialize_app
 from flask import Flask
 
 
 # TODO:
-# refactor the code
 # style it a bit
-# error handling
 # error pages
 # about page
-
-# proper id system for issues
 # testing
 
 
 load_dotenv()
-MAP_TOKEN = os.getenv("MAP_TOKEN")
 DB_URL = os.getenv("DB_URL")
-API_KEY = os.getenv("API_KEY")
 FLASK_SECRET = os.getenv("FLASK_SECRET")
 
 app = Flask(__name__)
@@ -33,10 +27,6 @@ default_app = initialize_app(
     {"databaseURL": DB_URL},
 )
 ref = db.reference(path="/")
-
-
-# Token for map API
-token = MAP_TOKEN
 
 # dummy data which should be retrieved from DB
 issues = [

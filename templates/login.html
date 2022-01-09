@@ -49,6 +49,9 @@
         <button type="submit">Submit</button>
         <a href="{{url_for('standard.register')}}">Register</a>
       </div>
+      {% if errors %}
+      <p class="mt-5 text-red-800"><b>{{errors}}</b></p>
+      {% endif %}
     </form>
   </div>
 </div>

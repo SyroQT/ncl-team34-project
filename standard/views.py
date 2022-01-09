@@ -12,7 +12,6 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
 # Main view redirects to login
-# TODO : Index page
 @standard_blueprint.route("/")
 def index():
     return redirect("login")
@@ -43,9 +42,10 @@ def register():
             data=details,
         )
         # check for errors in result]\
-        # TODO error handling
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
+            return render_template("register.html", errors=response["message"])
+
         # if the registration succeeded
         if "idToken" in r.json().keys():
             response = {"status": "success", "idToken": r.json()["idToken"]}
@@ -58,4 +58,4 @@ def register():
 
             return redirect(url_for("users.user"))
 
-    return render_template("register.html")
+    return render_template("register.html", errors=None)
