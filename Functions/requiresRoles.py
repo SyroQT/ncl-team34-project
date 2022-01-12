@@ -33,6 +33,7 @@ def requires_roles(role=None):
                             verif["uid"] in list(db_roles[role].values()),
                             db_roles,
                             "\n" + role,
+                            f,
                         )
                         return f(*args, **kwargs)
                     else:
