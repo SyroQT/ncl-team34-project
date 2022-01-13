@@ -2,28 +2,51 @@
 <div id="login" class="relative flex">
   <div
     id="card"
-    class="
-      bg-white
-      shadow-md
-      px-4
-      py-8
-      rounded-3xl
-      w-80
-      max-w-md
-      absolute
-      top-1/2
-      left-1/2
-      transform
-      -translate-x-1/2 -translate-y-1/2
-    "
+    class="bg-white shadow-md px-4 py-8 rounded-3xl w-80 max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <form action="{{url_for('register')}}" method="post">
-      <!-- Name -->
+    <form action="{{url_for('standard.register')}}" method="post">
+      <!-- Title  -->
       <div
         id="title"
         class="font-medium self-center text-xl sm:text-3xl text-gray-800"
       >
         Create an account
+      </div>
+
+      <!-- First Name -->
+      <div class="mb-4 mt-4">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="first-name"
+        >
+          First Name
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="first-name"
+          name="first_name"
+          type="text"
+          required
+          placeholder="First name"
+        />
+      </div>
+
+      <!-- Last name -->
+      <div class="mb-4 mt-4">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="last-name"
+        >
+          Last name
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="last-name"
+          name="last_name"
+          type="text"
+          required
+          placeholder="Last name"
+        />
       </div>
 
       <!-- Email -->
@@ -32,24 +55,30 @@
           Email
         </label>
         <input
-          class="
-            shadow
-            appearance-none
-            border
-            rounded
-            w-full
-            py-2
-            px-3
-            text-gray-700
-            leading-tight
-            focus:outline-none focus:shadow-outline
-          "
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="email"
-          type="text"
+          name="email"
+          type="email"
           required
           placeholder="email@example.io"
         />
       </div>
+
+      <!-- Phone -->
+      <div class="mb-4 mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
+          Phone number
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="phone"
+          name="phone"
+          type="number"
+          required
+          placeholder="+44..."
+        />
+      </div>
+
       <!-- Password -->
       <div class="mb-6">
         <label
@@ -59,20 +88,9 @@
           Password
         </label>
         <input
-          class="
-            shadow
-            appearance-none
-            border
-            rounded
-            w-full
-            py-2
-            px-3
-            text-gray-700
-            mb-3
-            leading-tight
-            focus:outline-none focus:shadow-outline
-          "
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
+          name="password"
           required
           type="password"
           placeholder="******************"
@@ -88,20 +106,9 @@
           Password
         </label>
         <input
-          class="
-            shadow
-            appearance-none
-            border
-            rounded
-            w-full
-            py-2
-            px-3
-            text-gray-700
-            mb-3
-            leading-tight
-            focus:outline-none focus:shadow-outline
-          "
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password-confirm"
+          name="password_confirm"
           required
           type="password"
           placeholder="******************"
@@ -111,7 +118,9 @@
       <!-- Bottom part -->
       <div class="flex flex-row justify-around">
         <button class="next-btn" type="submit">Next</button>
-        <!-- <a href="{{url_for('register')}}">Register</a> -->
+        {% if errors %}
+        <p class="mt-5 text-red-800"><b>{{errors}}</b></p>
+        {% endif %}
       </div>
     </form>
   </div>

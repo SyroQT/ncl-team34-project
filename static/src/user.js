@@ -8,9 +8,11 @@ function pinClickHandler(e){
     const id = document.getElementById("issue-id");
     const description = document.getElementById("issue-description");
     const category = document.getElementById("issue-category");
-    const downvotes = document.getElementById("downvote");
-    const upvotes = document.getElementById("upvote");
-    
+    const score = document.getElementById("score");
+    const downvote = document.getElementById("downvote-a");
+    const upvote = document.getElementById("upvote-a");
+    let upvoteFlag = false;
+    let downvoteFlag = false;
 
     card.style.display = "flex";
     drop.style.pointerEvents = "auto";
@@ -23,8 +25,44 @@ function pinClickHandler(e){
     id.innerHTML = "Issue #" + element.getAttribute("data-id");
     description.innerHTML = element.getAttribute("data-description");
     category.innerHTML = element.getAttribute("data-category");
-    downvotes.innerHTML = element.getAttribute("data-downvotes");
-    upvotes.innerHTML = element.getAttribute("data-upvotes");
+    score.innerHTML = element.getAttribute("data-score");
+
+
+    if(downvote){
+      downvote.addEventListener('click', e => {
+        if (!downvoteFlag){
+          downvoteFlag = true;
+          upvoteFlag = false;
+          const newScore = document.getElementById("down-score");
+          const idInput = document.getElementById("down-issue-id-input");
+    
+          newScore.value = parseInt(score.innerHTML)-1;
+          idInput.value = element.getAttribute("data-id");
+          downvote.parentElement.submit();
+        }
+      });
+
+      upvote.addEventListener('click', e => {
+        if (!upvoteFlag){
+          upvoteFlag = true;
+          downvoteFlag = false;
+          const newScore = document.getElementById("up-score");
+          const idInput = document.getElementById("up-issue-id-input");
+    
+          newScore.value = parseInt(score.innerHTML)+1;
+          idInput.value = element.getAttribute("data-id");
+          upvote.parentElement.submit();
+        }
+      });
+    } else {
+      document.getElementById("delete-btn").addEventListener('click', e => {
+        const deleteForm = document.getElementById("delete-form");
+        const issueToDelete = document.getElementById("issue-id-delete");
+      
+        issueToDelete.value = element.getAttribute("data-id");
+        deleteForm.submit();
+      });
+    }
     
   }
 
@@ -49,6 +87,9 @@ function pinClickHandler(e){
     const coordinates = e.lngLat;
     const drop = document.getElementById("drop");
     const issue = document.getElementById("new-issue");
+    const lng = document.getElementById("lng");
+    const lat = document.getElementById("lat");
+
 
     issue.style.display = "flex";
     drop.style.pointerEvents = "auto";
@@ -57,6 +98,9 @@ function pinClickHandler(e){
       issue.style.display = "none"
       drop.style.pointerEvents = "none";
     })
+
+    lat.value = coordinates.lat;
+    lng.value = coordinates.lng;
   }
 
   function init(){
