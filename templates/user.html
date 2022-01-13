@@ -70,7 +70,7 @@ src="{{url_for('static',filename='src/user.js')}}"
   <div class="vertical-flex" id="voting">
     <p id="score"></p>
 
-    <form action="{{url_for('score_cast')}}", method="POST" id="downvote">
+    <form action="{{url_for('users.score_cast')}}", method="POST" id="downvote">
       <a id="downvote-a" href="#">
           <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
       </a>
@@ -78,7 +78,7 @@ src="{{url_for('static',filename='src/user.js')}}"
       <input type="hidden" name="score" id="down-score"/>  
     </form>
 
-    <form action="{{url_for('score_cast')}}", method="POST" id="upvote">
+    <form action="{{url_for('users.score_cast')}}", method="POST" id="upvote">
       <a id="upvote-a" href="#">
             <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
       </a>
@@ -92,8 +92,8 @@ src="{{url_for('static',filename='src/user.js')}}"
   <!-- Menu card popup -->
   <div id="menu-screen">
     <ul id="menu-items">
-      <li><a href="{{url_for('about')}}">About</a></li>
-      <li><a href="{{url_for('logout')}}">Logout</a></li>
+      <li><a href="{{url_for('standard.about')}}">About</a></li>
+      <li><a href="{{url_for('users.logout')}}">Logout</a></li>
     </ul>
   </div>
 
@@ -120,7 +120,7 @@ src="{{url_for('static',filename='src/user.js')}}"
     hidden
   "
   >
-    <form action="{{url_for('new_issue')}}", method="POST">
+    <form action="{{url_for('users.new_issue')}}", method="POST">
     <div class="font-medium mb-4 self-center text-xl sm:text-3xl text-gray-800">
       Create a new issue
     </div>

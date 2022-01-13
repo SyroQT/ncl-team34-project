@@ -5,3 +5,4 @@ firebase-admin
 Flask-WTF
 email-validator
 WTForms
+requests
