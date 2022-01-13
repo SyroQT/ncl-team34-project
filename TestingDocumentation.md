@@ -13,7 +13,7 @@
 
 >>**Pass?**: Partially
 
->>**Comments**:
+>>**Comments**: Fixed by Titas Janušonis on 10/01/2022. The message now appears.
 
 <br>
 <br>
