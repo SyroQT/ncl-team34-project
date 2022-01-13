@@ -4,7 +4,7 @@
 <br>
 
 >##**Test No. 1**
->>**Description**: Enter an invalid Email and an invalid Password on the Login Page.
+>>**Description**: Enter an invalid Email or/and an invalid Password on the Login Page.
 
 >>**Expected Outcome**: It should prompt an error message stating that the login credentials are invalid.
 
@@ -13,7 +13,7 @@
 
 >>**Pass?**: Partially
 
->>**Comments**: Fixed by Titas Janušonis on 10/01/2022. The message now appears.
+>>**Comments**: Fixed by Titas Janušonis on 10/01/2022. The following messages now appear: <br> 'EMAIL_NOT_FOUND' or 'INVALID_PASSWORD'
 
 <br>
 <br>
