@@ -16,8 +16,8 @@ class RegisterForm(FlaskForm):
             Length(
                 min=6,
                 max=12,
-                message="Password must be between 6 and 12 characters in length.",
-            ),
+                message="Password must be between 6 and 12 characters in length."
+            )
         ]
     )
     password_confirm = PasswordField(
