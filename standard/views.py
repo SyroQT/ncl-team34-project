@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 from firebase_admin import auth, db
 from flask import Blueprint, request, session, redirect, url_for, render_template
+from users.forms import RegisterForm
 
 standard_blueprint = Blueprint("standard", __name__, template_folder="templates")
 
@@ -21,30 +22,34 @@ def index():
 # TODO : about page
 @standard_blueprint.route("/about")
 def about():
-    return "About"
-
+    return render_template('about.html')
 
 # Register route
-@standard_blueprint.route("/register", methods=["POST", "GET"])
+@standard_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == "POST":
+    form = RegisterForm()
+    if form.validate_on_submit():
+        # if request.method == "POST":
+
         # TODO: validation of data
         details = {
-            "email": request.form["email"],
-            "password": request.form["password"],
-            "returnSecureToken": True,
+            "email": form.email.data,
+            "password": form.password.data,
+            "returnSecureToken": True
         }
+
         # send post request to firebase api
         r = requests.post(
             "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={}".format(
                 API_KEY
             ),
-            data=details,
+            data=details
         )
-        # check for errors in result]\
+
+        # check for errors in result
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
-            return render_template("register.html", errors=response["message"])
+            return render_template("register.html", errors=response["message"], form=form)
 
         # if the registration succeeded
         if "idToken" in r.json().keys():
@@ -58,4 +63,5 @@ def register():
 
             return redirect(url_for("users.user"))
 
-    return render_template("register.html", errors=None)
+    return render_template("register.html", errors=None, form=form)
+
