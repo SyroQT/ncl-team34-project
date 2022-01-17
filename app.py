@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 from firebase_admin import db, credentials, initialize_app
 from flask import Flask
 
+"""
+Entry point of the web app
+"""
 
 # TODO:
 # style it a bit

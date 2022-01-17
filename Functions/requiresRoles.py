@@ -1,4 +1,3 @@
-# Decorators
 import json
 from functools import wraps
 from time import sleep
@@ -6,6 +5,11 @@ from logging import raiseExceptions
 
 from firebase_admin import auth, db
 from flask import session
+
+"""
+Decorator file:
+- required_roles -> checks if the user has authorisation to visit the route
+"""
 
 
 def requires_roles(role=None):

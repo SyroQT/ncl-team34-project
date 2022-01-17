@@ -6,6 +6,12 @@ from flask import Blueprint, render_template, redirect, url_for, request
 
 from Functions import requiresRoles
 
+"""
+Views related to admin role:
+- delete_issue
+- admin
+
+"""
 
 admins_blueprints = Blueprint("admins", __name__, template_folder="templates")
 

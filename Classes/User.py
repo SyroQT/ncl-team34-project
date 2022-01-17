@@ -1,6 +1,19 @@
-class User:
+"""
+Class for register route
+"""
 
-    def __init__(self, Username, Firstname, Lastname, email, password, PhoneNumber=None, Admin=False):
+
+class User:
+    def __init__(
+        self,
+        Username,
+        Firstname,
+        Lastname,
+        email,
+        password,
+        PhoneNumber=None,
+        Admin=False,
+    ):
         self.Username = Username
         self.Firstname = Firstname
         self.Lastname = Lastname

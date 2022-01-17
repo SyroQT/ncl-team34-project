@@ -6,6 +6,14 @@ from dotenv import load_dotenv
 from firebase_admin import auth, db
 from flask import Blueprint, request, session, redirect, url_for, render_template
 
+"""
+Standard views:
+- index
+- about
+- register
+
+"""
+
 standard_blueprint = Blueprint("standard", __name__, template_folder="templates")
 
 load_dotenv()

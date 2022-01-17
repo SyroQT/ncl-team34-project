@@ -8,6 +8,15 @@ from flask import session, redirect, render_template, request, url_for, Blueprin
 
 from Functions import requiresRoles, getRoleFromID
 
+"""
+Views related to user role:
+- new_issue
+- score_cast
+- user
+- login 
+- logout
+
+"""
 
 # CONFIG
 users_blueprint = Blueprint("users", __name__, template_folder="templates")
