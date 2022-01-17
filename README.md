@@ -4,10 +4,10 @@
 
 ### Setting up
 
-Clone the repo and deal with auth
+Clone the repo and deal with authorisations 
 
 ```bash
-git clone https://github.com/newcastleuniversity-computing/team-34-project
+git clone https://github.com/SyroQT/ncl-team34-project.git
 ```
 
 Install dependencies (make sure to create a personal env before)
@@ -16,7 +16,9 @@ Install dependencies (make sure to create a personal env before)
 pip install -r requirements.tx
 ```
 
-Run the app 
+Make sure you have the correct `.env` and `firebase_key.json` files
+
+Run the app. We recommend running it through the CLI
 
 ```bash
 python app.py
@@ -29,20 +31,39 @@ flask run
 ### Updating 
 
 Each user should create his own branch. And merge/create pull requests from there. 
-Remeber to commit more rather then less.
+Remember to commit more rather than less.
 
 ## Important information
 
-TBD
+### Running the app
+There seems to be issues trying to run the web app using Pycharms' tool. So we suggest to use CLI
+
+### Coding conventions
+
+#### Python 
+- pep8 conventions [link](https://www.python.org/dev/peps/pep-0008/)
+- Black formatter to enforce this [link](https://black.readthedocs.io/en/stable/)
+
+#### HTML, CSS, and JS
+
+- Formatted using [this](https://webformatter.com/html) online tool
+
+### Testing documentation
+
+Testing documentation is provided in [here](TestingDocumentation.md)
+
+Our team decided to test most of the web application by hand. This decision was reached because the app wasn't deemed to be complex enough. 
+
 
 ## Team members
 
-Andrew Andreadis
-Bartek
+Titas Janusonis,
+Andreas E. Andreadis,
+Bartlomiej Buba,
+Areesh Imran,
 Aidan Walton
-Areesh
-Titas Janusonis
 
 ## Licence 
 
-TBD
+[LICENSE](LICENSE)
+

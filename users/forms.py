@@ -1,34 +1,52 @@
+import re
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import Required, Email, ValidationError, Length, EqualTo
+from wtforms.validators import Email, ValidationError, Length, EqualTo, InputRequired
+
+
+# checks if a field contains characters that are not allowed
+def character_check(form, field):
+    excluded_chars = "*?!'^+%&/()=}][{$#@<>"
+    for char in field.data:
+        if char in excluded_chars:
+            raise ValidationError(
+                f"Character {char} is not allowed.")
 
 
 class RegisterForm(FlaskForm):
-    username = StringField(validators=[Required()])
-    firstname = StringField(validators=[Required()])
-    lastname = StringField(validators=[Required()])
-    email = StringField(validators=[Required(), Email()])
-    phone = StringField(validators=[Required()])
+
+    firstname = StringField(validators=[InputRequired()])
+    lastname = StringField(validators=[InputRequired()])
+    email = StringField(validators=[InputRequired(), Email()])
+    phone = StringField(validators=[InputRequired()])
+
     password = PasswordField(
         validators=[
-            Required(),
+            InputRequired(),
             Length(
                 min=6,
                 max=12,
-                message="Password must be between 6 and 12 characters in length.",
-            ),
+                message="Password must be between 6 and 12 characters in length."
+            )
         ]
     )
     password_confirm = PasswordField(
         validators=[
-            Required(),
-            EqualTo("password", message="Both password fields must be equal!"),
+            InputRequired(),
+            EqualTo("password", message="Both password fields must be equal!")
         ]
     )
     submit = SubmitField()
 
+    def validate_password(self, password):
+        p = re.compile(r'(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W)')
+        if not p.match(self.password.data):
+            raise ValidationError(message="Password must contain at least 1 small letter,"
+                                          " 1 capital letter, 1 digit and 1 special character.")
+
 
 class LoginForm(FlaskForm):
-    email = StringField(validators=[Required(), Email()])
-    password = PasswordField(validators=[Required()])
+    email = StringField(validators=[InputRequired(), Email()])
+    password = PasswordField(validators=[InputRequired()])
     submit = SubmitField()
