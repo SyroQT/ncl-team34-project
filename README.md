@@ -35,7 +35,25 @@ Remember to commit more rather than less.
 
 ## Important information
 
+### Running the app
 There seems to be issues trying to run the web app using Pycharms' tool. So we suggest to use CLI
+
+### Coding conventions
+
+#### Python 
+- pep8 conventions [link](https://www.python.org/dev/peps/pep-0008/)
+- Black formatter to enforce this [link](https://black.readthedocs.io/en/stable/)
+
+#### HTML, CSS, and JS
+
+- Formatted using [this](https://webformatter.com/html) online tool
+
+### Testing documentation
+
+Testing documentation is provided in [here](TestingDocumentation.md)
+
+Our team decided to test most of the web application by hand. This decision was reached because the app wasn't deemed to be complex enough. 
+
 
 ## Team members
 
