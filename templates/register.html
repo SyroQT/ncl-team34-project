@@ -1,10 +1,11 @@
 {% extends "base.html" %} {% block content %}
-<div id="login" class="relative flex">
+<div id="login" class="relative flex" xmlns="http://www.w3.org/1999/html">
   <div
     id="card"
     class="bg-white shadow-md px-4 py-8 rounded-3xl w-80 max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <form action="{{url_for('standard.register')}}" method="post">
+    {{ form.csrf_token() }}
       <!-- Title  -->
       <div
         id="title"
@@ -21,14 +22,13 @@
         >
           First Name
         </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="first-name"
-          name="first_name"
-          type="text"
-          required
-          placeholder="First name"
-        />
+
+
+          {{ form.firstname(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="First Name") }}
+            {% for error in form.firstname.errors %}
+                {{ error }}
+            {% endfor %}
+
       </div>
 
       <!-- Last name -->
@@ -39,14 +39,11 @@
         >
           Last name
         </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="last-name"
-          name="last_name"
-          type="text"
-          required
-          placeholder="Last name"
-        />
+
+         {{ form.lastname(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Lastname") }}
+            {% for error in form.lastname.errors %}
+                {{ error }}
+            {% endfor %}
       </div>
 
       <!-- Email -->
@@ -54,14 +51,10 @@
         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
           Email
         </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email"
-          name="email"
-          type="email"
-          required
-          placeholder="email@example.io"
-        />
+         {{ form.email(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Email") }}
+            {% for error in form.email.errors %}
+                {{ error }}
+            {% endfor %}
       </div>
 
       <!-- Phone -->
@@ -69,14 +62,10 @@
         <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
           Phone number
         </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="phone"
-          name="phone"
-          type="number"
-          required
-          placeholder="+44..."
-        />
+        {{ form.phone(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="+44...") }}
+            {% for error in form.phone.errors %}
+                {{ error }}
+            {% endfor %}
       </div>
 
       <!-- Password -->
@@ -87,14 +76,10 @@
         >
           Password
         </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          name="password"
-          required
-          type="password"
-          placeholder="******************"
-        />
+        {{ form.password(type="password", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Password") }}
+            {% for error in form.password.errors %}
+                {{ error }}
+            {% endfor %}
       </div>
 
       <!-- Confirm password -->
@@ -105,19 +90,15 @@
         >
           Password
         </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password-confirm"
-          name="password_confirm"
-          required
-          type="password"
-          placeholder="******************"
-        />
+        {{ form.password_confirm(type="password", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Repeat Password") }}
+            {% for error in form.password_confirm.errors %}
+                {{ error }}
+            {% endfor %}
       </div>
 
       <!-- Bottom part -->
       <div class="flex flex-row justify-around">
-        <button class="next-btn" type="submit">Next</button>
+<button class="next-btn" type="submit">Next</button>
         {% if errors %}
         <p class="mt-5 text-red-800"><b>{{errors}}</b></p>
         {% endif %}

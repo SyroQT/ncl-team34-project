@@ -22,12 +22,16 @@ API_KEY = os.getenv("API_KEY")
 def new_issue():
     ref = db.reference("/issues")
     issues = ref.get()
+
+    id_ref = db.reference("/issue-id-counter")
+    issue_id = id_ref.get()
+
     # TODO : needs a better way of calculating ids
-    id = 1 + len(issues)
+    id = 1 + issue_id
 
     new_issue = {
         "category": request.form["category"],
-        "color": "black",
+        "color": "orange",
         "description": request.form["description"],
         "lng": request.form["lng"],
         "lat": request.form["lat"],
@@ -36,6 +40,7 @@ def new_issue():
     }
 
     ref.push(new_issue)
+    id_ref.set(id)
     return redirect(url_for("users.user"))
 
 
@@ -68,7 +73,10 @@ def user():
     if type(issues) == list:
         issues = [i for i in issues if i]
     else:
-        issues = {k: v for k, v in issues.items() if v is not None}
+        try:
+            issues = {k: v for k, v in issues.items() if v is not None}
+        except AttributeError:
+            issues = []
 
     return render_template(
         "user.html", token=MAP_TOKEN, issues=issues, categories=categories

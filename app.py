@@ -2,8 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from firebase_admin import db, credentials, initialize_app
-from flask import Flask
-
+from flask import Flask, render_template
 
 # TODO:
 # style it a bit
@@ -72,6 +71,26 @@ categories = ["Environmental", "Lights", "Cars", "Wildlife", "Bike lanes"]
 # this deletes all data from db so be careful
 # ref.set({"issues": issues, "categories": categories})
 
+#error pages
+@app.errorhandler(400)
+def bad_request(error):
+    return render_template('400.html'), 400
+
+@app.errorhandler(403)
+def page_forbidden(error):
+    return render_template('403.html'), 403
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('500.html'), 500
+
+@app.errorhandler(503)
+def service_unavailable(error):
+    return render_template('503.html'), 503
 
 if __name__ == "__main__":
     from users.views import users_blueprint
