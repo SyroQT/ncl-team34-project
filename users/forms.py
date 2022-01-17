@@ -5,11 +5,22 @@ from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import Email, ValidationError, Length, EqualTo, InputRequired
 
 
+# checks if a field contains characters that are not allowed
+def character_check(form, field):
+    excluded_chars = "*?!'^+%&/()=}][{$#@<>"
+    for char in field.data:
+        if char in excluded_chars:
+            raise ValidationError(
+                f"Character {char} is not allowed.")
+
+
 class RegisterForm(FlaskForm):
+
     firstname = StringField(validators=[InputRequired()])
     lastname = StringField(validators=[InputRequired()])
     email = StringField(validators=[InputRequired(), Email()])
     phone = StringField(validators=[InputRequired()])
+
     password = PasswordField(
         validators=[
             InputRequired(),
