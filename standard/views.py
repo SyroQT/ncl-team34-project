@@ -7,6 +7,14 @@ from firebase_admin import auth, db
 from flask import Blueprint, request, session, redirect, url_for, render_template
 from users.forms import RegisterForm
 
+"""
+Standard views:
+- index
+- about
+- register
+
+"""
+
 standard_blueprint = Blueprint("standard", __name__, template_folder="templates")
 
 load_dotenv()
@@ -49,6 +57,7 @@ def register():
         # check for errors in result
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
+
             return render_template("register.html", errors=response["message"], form=form)
 
         # if the registration succeeded

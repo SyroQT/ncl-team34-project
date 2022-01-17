@@ -1,4 +1,3 @@
-# Decorators
 import json
 from functools import wraps
 from time import sleep
@@ -6,6 +5,11 @@ from logging import raiseExceptions
 
 from firebase_admin import auth, db
 from flask import session
+
+"""
+Decorator file:
+- required_roles -> checks if the user has authorisation to visit the route
+"""
 
 
 def requires_roles(role=None):
@@ -22,14 +26,12 @@ def requires_roles(role=None):
                 verif = auth.verify_id_token(json.loads(session["idToken"]))
             except TypeError:
                 verif = {}
-
             if "uid" in verif.keys():
                 try:
                     ref = db.reference("/roles/")
                     db_roles = ref.get()
                     if not role:
                         return f(*args, **kwargs)
-
                     elif verif["uid"] in list(db_roles[role].values()):
                         # print(
                         #     verif["uid"] in list(db_roles[role].values()),
