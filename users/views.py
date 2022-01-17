@@ -55,7 +55,6 @@ def score_cast():
     for k, v in issues.items():
         if v["id"] == int(request.form["issue-id"]):
             ref.child(k).update({"score": int(request.form["score"])})
-
     return redirect(url_for("users.user"))
 
 
@@ -77,7 +76,6 @@ def user():
             issues = {k: v for k, v in issues.items() if v is not None}
         except AttributeError:
             issues = []
-
     return render_template(
         "user.html", token=MAP_TOKEN, issues=issues, categories=categories
     )
@@ -109,7 +107,6 @@ def login():
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
             return render_template("login.html", errors=response["message"])
-
         # success
         if "idToken" in r.json().keys():
             response = {"status": "success", "idToken": r.json()["idToken"]}

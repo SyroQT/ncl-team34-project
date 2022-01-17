@@ -22,14 +22,12 @@ def requires_roles(role=None):
                 verif = auth.verify_id_token(json.loads(session["idToken"]))
             except TypeError:
                 verif = {}
-
             if "uid" in verif.keys():
                 try:
                     ref = db.reference("/roles/")
                     db_roles = ref.get()
                     if not role:
                         return f(*args, **kwargs)
-
                     elif verif["uid"] in list(db_roles[role].values()):
                         # print(
                         #     verif["uid"] in list(db_roles[role].values()),

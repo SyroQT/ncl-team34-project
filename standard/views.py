@@ -45,7 +45,6 @@ def register():
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
             return render_template("register.html", errors=response["message"])
-
         # if the registration succeeded
         if "idToken" in r.json().keys():
             response = {"status": "success", "idToken": r.json()["idToken"]}
@@ -57,5 +56,4 @@ def register():
             ref.push(verif["uid"])
 
             return redirect(url_for("users.user"))
-
     return render_template("register.html", errors=None)

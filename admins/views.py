@@ -21,7 +21,6 @@ def delete_issue():
     for k, v in issues.items():
         if v["id"] == int(request.form["issue-id"]):
             ref.child(k).set({})
-
     return redirect(url_for("admins.admin"))
 
 
@@ -40,7 +39,6 @@ def admin():
         issues = [i for i in issues if i]
     else:
         issues = {k: v for k, v in issues.items() if v is not None}
-
     return render_template(
         "admin.html", token=MAP_TOKEN, issues=issues, categories=categories
     )
