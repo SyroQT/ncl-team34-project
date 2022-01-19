@@ -232,7 +232,7 @@
 >>**Actual Outcome**: An error message appears which states: <br>
 > "Both password fields must be equal!"
 
->>**Pass?**: No
+>>**Pass?**: Yes
 
 >>**Comments**:
  
