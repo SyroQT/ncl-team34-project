@@ -202,27 +202,12 @@
 >>**Pass?**: Yes
 
 >>**Comments**:
+
  
 <br>
 
 
 ##**Test No. 14**
->>**Description**: While registering, enter passwords that <br>
-> do not match i.e enter two different passwords and try to register.
-
->>**Expected Outcome**: An error message will appear telling the user <br>
-> that the passwords do not match.
-
->>**Actual Outcome**: The user is registered and the user page appears.
-
->>**Pass?**: No
-
->>**Comments**:
- 
-<br>
-
-
-##**Test No. 15**
 >>**Description**: While registering, enter passwords that <br>
 > do not match i.e enter two different passwords and try to register.
 
@@ -239,7 +224,7 @@
 <br>
 
 
-##**Test No. 16**
+##**Test No. 15**
 >>**Description**: Register with an invalid phone number <br>
 > by entering a phone number of an invalid length i.e only one or two digits.
 
@@ -255,7 +240,7 @@
 <br>
 
 
-##**Test No. 17**
+##**Test No. 16**
 >>**Description**: Enter a character that is not a digit <br>
 > in the phone number field on the register page i.e enter a letter.
 
@@ -272,7 +257,7 @@
 <br>
 
 
-##**Test No. 18**
+##**Test No. 17**
 >>**Description**: On the user page, click on a part of the map.
 
 >>**Expected Outcome**: The user will be able to create an issue.
@@ -288,7 +273,7 @@
 <br>
 
 
-##**Test No. 19**
+##**Test No. 18**
 >>**Description**: Create a new issue and submit.
 
 >>**Expected Outcome**: The created issue should appear on the map.
@@ -302,7 +287,7 @@
 <br>
 
 
-##**Test No. 20**
+##**Test No. 19**
 >>**Description**: Up vote or down vote an issue on the map.
 
 >>**Expected Outcome**: The vote will be counted and the new <br>
@@ -318,7 +303,7 @@
 <br>
 
 
-##**Test No. 21**
+##**Test No. 20**
 >>**Description**: As an admin, check if the new issue <br>
 > created by the new user is visible.
 
@@ -335,7 +320,7 @@
 <br>
 
 
-##**Test No. 22**
+##**Test No. 21**
 >>**Description**: As an admin, go through the admin tools.
 
 >>**Expected Outcome**: The admin can check every category <br>
