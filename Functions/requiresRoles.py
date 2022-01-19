@@ -1,6 +1,7 @@
 # Decorators
 import json
 from functools import wraps
+from time import sleep
 from logging import raiseExceptions
 
 from firebase_admin import auth, db
@@ -17,6 +18,7 @@ def requires_roles(role=None):
         def wrapped(*args, **kwargs):
 
             try:
+                sleep(0.05)
                 verif = auth.verify_id_token(json.loads(session["idToken"]))
             except TypeError:
                 verif = {}
@@ -29,11 +31,12 @@ def requires_roles(role=None):
                         return f(*args, **kwargs)
 
                     elif verif["uid"] in list(db_roles[role].values()):
-                        print(
-                            verif["uid"] in list(db_roles[role].values()),
-                            db_roles,
-                            "\n" + role,
-                        )
+                        # print(
+                        #     verif["uid"] in list(db_roles[role].values()),
+                        #     db_roles,
+                        #     "\n" + role,
+                        #     f,
+                        # )
                         return f(*args, **kwargs)
                     else:
                         raiseExceptions("TypeError")
