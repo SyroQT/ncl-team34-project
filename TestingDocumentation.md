@@ -229,7 +229,8 @@
 >>**Expected Outcome**: An error message will appear telling the user <br>
 > that the passwords do not match.
 
->>**Actual Outcome**: The user is registered and the user page appears.
+>>**Actual Outcome**: An error message appears which states: <br>
+> "Both password fields must be equal!"
 
 >>**Pass?**: No
 
