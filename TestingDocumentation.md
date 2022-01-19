@@ -190,13 +190,14 @@
 
 ##**Test No. 13**
 >>**Description**: Register with a weak password i.e a password <br>
-> which contains only one character.
+> which contains only one character or no special characters.
 
 >>**Expected Outcome**: An error message will appear telling the user <br>
 > that the password they entered is weak or invalid.
 
 >>**Actual Outcome**: An error message appears which states <br>
-> "WEAK_PASSWORD: Password should be at least 6 characters" <br>
+> "Password must be between 6 and 12 characters in length. <br>
+> Password must contain at least 1 small letter, 1 capital letter, 1 digit and 1 special character."
 > and the register page is shown for the user to register with a different password.
 
 >>**Pass?**: Yes
