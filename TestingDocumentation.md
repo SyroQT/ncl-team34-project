@@ -197,7 +197,7 @@
 
 >>**Actual Outcome**: An error message appears which states <br>
 > "Password must be between 6 and 12 characters in length. <br>
-> Password must contain at least 1 small letter, 1 capital letter, 1 digit and 1 special character."
+> Password must contain at least 1 small letter, 1 capital letter, 1 digit and 1 special character." <br>
 > and the register page is shown for the user to register with a different password.
 
 >>**Pass?**: Yes
