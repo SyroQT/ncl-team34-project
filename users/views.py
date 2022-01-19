@@ -131,4 +131,4 @@ def login():
 @requiresRoles.requires_roles()
 def logout():
     session["idToken"] = None
-    return redirect("login")
+    return redirect("home")
