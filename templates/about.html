@@ -1,10 +1,218 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Us Sec</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="css/stlye.css") }}>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,200&display=swap');
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+.section{
+    width: 100%;
+    min-height: 100vh;
+    background-color: #ddd;
+}
+.container{
+    width: 80%;
+    display: block;
+    margin: auto;
+    padding-top: 100px;
+}
+.content-section{
+    float: left;
+    width: 55%;
+}
+.image-section{
+    float: right;
+    width: 40%;
+    position: absolute;
+    top: 250px;
+    right: 50px;
+}
+.image-section img{
+    width: 350px;
+    height: 400px;
+}
+.content-section .title{
+    text-transform: uppercase;
+    font-size: 15px;
+    margin: 10px;
+}
+.content-section .content h3{
+    margin-top: 10px;
+    color: #5d5d5d;
+    font-size: 21px;
+}
+.content-section .content h4{
+    margin-top: 10px;
+    font-family: sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+}
+@media screen and (max-width: 768px){
+.container{
+    width: 80%;
+    display: block;
+    margin: auto;
+    padding-top: 100px;
+}
+.content-section{
+    float: none;
+    width: 50%;
+    display: block;
+    margin: auto;
+}
+.image-section{
+    float: right;
+    width: 100%;
+}
+.image-section img{
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+.content-section .title{
+    text-align: center;
+    font-size: 19px;
+}
+}
+        body {
+	margin: 0;
+	background: #222;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 800;
 
-{% block content %}
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+}
 
-<h1 class="title">
-  Welcome, {{ name }}
-</h1>
-{% endblock %}
+.container {
+	width: 80%;
+	margin: 0 auto;
+
+}
+header {
+  background: #55d6aa;
+    height: 40vh;
+}
+header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.logo {
+  float: left;
+  padding: 1px 530px;
+  height: 500px;
+
+}
+
+nav {
+  float: right;
+
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin-left: 100px;
+  padding-top: 23px;
+  right: 160px;
+  position: relative;
+}
+nav a {
+  color: #444;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+nav a:hover {
+  color: #000;
+}
+
+nav a::before {
+  content: '';
+  display: block;
+  height: 5px;
+  background-color: #444;
+
+  position: absolute;
+  top: 0;
+  width: 0;
+
+  transition: all ease-in-out 250ms;
+}
+
+nav a:hover::before {
+  width: 100%;
+}
+.map{
+    height: 80vh;
+    width: 100%;
+}
+</style>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('standard.index') }}" class="navbar-item">Home</a> </li>
+            <li><a href="{{ url_for('standard.register') }}" class="navbar-item">Register</a> </li>
+            <li><a href="{{ url_for('users.login') }}" class="navbar-item">Login</a> </li>
+            <li><a href="{{ url_for('users.user') }}" class="navbar-item">Map</a> </li>
+            <li><a href="{{ url_for('standard.about') }}" class="navbar-item">About Us</a> </li>
+            <li><a href="{{ url_for('users.logout') }}" class="navbar-item">Logout</a> </li>
+        </ul>
+    </nav>
+<body>
+    <div class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="title">
+                    <h1>About us</h1>
+                </div>
+                <div class="content">
+                    <h3>Our Mission</h3>
+                    <h4>This website was created based on a Newcastle University Project. Our mission was to create a web page available
+                    to everyone so that they can report any issues they may face in their everyday life. Our goal was to
+                    make sure that awareness of those issues will be spread so that everyone can be informed about them and be able to avoid
+                    them. That could involve closed roads, malfunctioning traffic lights or lights and many more issues that can appear
+                    in a city's infrastructure.</h4>
+
+                </div>
+                <div class="image-section">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/University_of_Newcastle_Coat_of_Arms.svg/1200px-University_of_Newcastle_Coat_of_Arms.svg.png">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="content-section">
+                <div class="title">
+                    <h1>Contact Us</h1>
+                </div>
+                <div class="content">
+                    <h3>You can contact us on our personal emails wih any queries </h3>
+                    <h4>Titas Janusonis<span style="padding-left:40px;">t.janusonis1@newcastle.ac.uk
+</span> </h4>
+                    <h4>Andreas Errikos Andreadis<span style="padding-left:40px;">A.E.Andreadis2@newcastle.ac.uk
+</span></h4>
+                    <h4>Bartlomiej Buba<span style="padding-left:40px;"> b.buba2@newcastle.ac.uk</span></h4>
+                    <h4>Areesh Imran<span style="padding-left:40px;">a.imran1@newcastle.ac.uk</span></h4>
+                    <h4>Aidan Walton<span style="padding-left:40px;">a.walton8@newcastle.ac.uk</span>
+</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
