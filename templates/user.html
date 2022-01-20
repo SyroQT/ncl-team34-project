@@ -105,7 +105,7 @@ please don't write your css, js, and html code in a html file.
     const streetMap = "mapbox://styles/mapbox/streets-v11";
 
     // Transforming issue data from backend
-    const pins = JSON.parse("{{ issues | tojson | safe}}");
+    const pins = JSON.parse('{{ issues | tojson | safe}}');
     const card = document.getElementById("card");
 
     // Loading the map
