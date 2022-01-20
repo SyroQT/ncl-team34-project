@@ -20,10 +20,16 @@ standard_blueprint = Blueprint("standard", __name__, template_folder="templates"
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
+
 # Main view redirects to login
 @standard_blueprint.route("/")
 def index():
-    return redirect("login")
+    return redirect("home")
+
+
+@standard_blueprint.route("/home")
+def home():
+    return render_template('home.html')
 
 
 # About page
@@ -31,6 +37,7 @@ def index():
 @standard_blueprint.route("/about")
 def about():
     return render_template('about.html')
+
 
 # Register route
 @standard_blueprint.route('/register', methods=['GET', 'POST'])
@@ -73,4 +80,3 @@ def register():
             return redirect(url_for("users.user"))
 
     return render_template("register.html", errors=None, form=form)
-
