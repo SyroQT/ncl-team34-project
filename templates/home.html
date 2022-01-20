@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Home Sec</title>
+    <title>Whinge</title>
     <meta charset="utf-8" />
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" />
     <meta name="viewport" content="width=device-width, intial-scale=1.0" />
@@ -32,6 +32,9 @@
     }
     header {
       background: #264653;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
       height: 20vh;
     }
     header::after {
@@ -39,14 +42,21 @@
       display: table;
       clear: both;
     }
+    .img {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
     .logo {
-      float: left;
-      padding: 1px 530px;
       height: 100px;
     }
 
     nav {
-      float: right;
+      margin-left: 10vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
     }
     nav ul {
       margin: 0;
@@ -95,8 +105,9 @@
   <body>
     <header>
       <div class="container">
-        <img src="../static/images/logo.png" alt="logo" class="logo" />
-
+        <div class="img">
+          <img src="../static/images/logo.png" alt="logo" class="logo" />
+        </div>
         <nav class="navbar">
           <ul>
             <li>
@@ -104,6 +115,7 @@
                 >Home</a
               >
             </li>
+            {% if is_login %}
             <li>
               <a href="{{ url_for('standard.register') }}" class="navbar-item"
                 >Register</a
@@ -114,19 +126,23 @@
                 >Login</a
               >
             </li>
+            {% endif %} {% if not is_login %}
             <li>
               <a href="{{ url_for('users.user') }}" class="navbar-item">Map</a>
             </li>
+            {% endif %}
             <li>
               <a href="{{ url_for('standard.about') }}" class="navbar-item"
                 >About Us</a
               >
             </li>
+            {% if not is_login %}
             <li>
               <a href="{{ url_for('users.logout') }}" class="navbar-item"
                 >Logout</a
               >
             </li>
+            {% endif %}
           </ul>
         </nav>
       </div>

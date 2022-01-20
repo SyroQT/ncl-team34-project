@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 from firebase_admin import auth, db
 from flask import Blueprint, request, session, redirect, url_for, render_template
+from Functions.getRoleFromID import get_role_from_id
 from users.forms import RegisterForm
 
 """
@@ -29,18 +30,30 @@ def index():
 
 @standard_blueprint.route("/home")
 def home():
-    return render_template('home.html')
+    is_login = True if session.get("idToken", None) else False
+
+    # map_route = None
+    # if is_login:
+    #     verif = auth.verify_id_token(session["idToken"])
+    #     user_type = get_role_from_id(verif["uid"])
+    #     if user_type == "user":
+    #         map_route = "users.user"
+    #     else:
+    #         map_route = "admins.admin"
+    # print(map_route)
+
+    return render_template("home.html", is_login=not is_login)
 
 
 # About page
 # TODO : about page
 @standard_blueprint.route("/about")
 def about():
-    return render_template('about.html')
+    return render_template("about.html")
 
 
 # Register route
-@standard_blueprint.route('/register', methods=['GET', 'POST'])
+@standard_blueprint.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -50,7 +63,7 @@ def register():
         details = {
             "email": form.email.data,
             "password": form.password.data,
-            "returnSecureToken": True
+            "returnSecureToken": True,
         }
 
         # send post request to firebase api
@@ -58,14 +71,16 @@ def register():
             "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={}".format(
                 API_KEY
             ),
-            data=details
+            data=details,
         )
 
         # check for errors in result
         if "error" in r.json().keys():
             response = {"status": "error", "message": r.json()["error"]["message"]}
 
-            return render_template("register.html", errors=response["message"], form=form)
+            return render_template(
+                "register.html", errors=response["message"], form=form
+            )
 
         # if the registration succeeded
         if "idToken" in r.json().keys():
