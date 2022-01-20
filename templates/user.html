@@ -6,205 +6,141 @@ please don't write your css, js, and html code in a html file.
 -->
 
 <!-- Style link -->
-<link rel="stylesheet" href="{{url_for('static', filename='css/user-styles.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/user-styles.css')}}" />
 <!-- JS link -->
-<script
-type="text/javascript"
-src="{{url_for('static',filename='src/user.js')}}"
-></script>
+<script type="text/javascript" src="{{url_for('static',filename='src/user.js')}}"></script>
 
 <!-- HMTL -->
 <div id="main">
+    <!-- Map -->
+    <div id="map" class="h-screen relative z-0"></div>
 
-  <!-- Map -->
-  <div id="map" 
-  class="h-screen relative z-0">
-  </div>
-  
-  <!-- Menu -->
-  <div>
-    <img
-      src="{{url_for('static', filename='src/assets/iconmonstr-menu-5.svg')}}"
-      alt="Menu"
-      id="menu"
-      class="absolute bottom-0 left-0 w-20 h-20 mb-8 ml-6"
-    />
-  </div>
-
-  <!-- Issue card -->
-  <div id="card"
-  class="
-    flex-col
-    bg-white
-    shadow-md
-    px-4
-    sm:px-6
-    md:px-8
-    lg:px-10
-    py-8
-    rounded-3xl
-    w-80
-    max-w-md
-
-    absolute
-    top-1/2
-    left-1/2
-    transform
-    -translate-x-1/2 -translate-y-1/2
-    hidden
-  "
->
-  <div id="issue-id" class="font-medium self-center text-xl sm:text-3xl text-gray-800">
-    Here goes id
-  </div>
-
-  <div id="issue-description" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
-    This is a place for a short description
-  </div>
-
-  <div id="issue-category" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
-    This place is a category
-  </div>
-
-  <!-- Botom part of the card -->
-  <div class="vertical-flex" id="voting">
-    <p id="score"></p>
-
-    <form action="{{url_for('users.score_cast')}}", method="POST" id="downvote">
-      <a id="downvote-a" href="#">
-          <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="">
-      </a>
-      <input type="hidden" name="issue-id" id="down-issue-id-input"/>  
-      <input type="hidden" name="score" id="down-score"/>  
-    </form>
-
-    <form action="{{url_for('users.score_cast')}}", method="POST" id="upvote">
-      <a id="upvote-a" href="#">
-            <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="">
-      </a>
-      <input type="hidden" name="issue-id" id="up-issue-id-input"/> 
-      <input type="hidden" name="score" id="up-score"/> 
-    </form>
-  </div>
-
-  </div>
-
-  <!-- Menu card popup -->
-  <div id="menu-screen">
-    <ul id="menu-items">
-      <li><a href="{{url_for('standard.about')}}">About</a></li>
-      <li><a href="{{url_for('users.logout')}}">Logout</a></li>
-    </ul>
-  </div>
-
-  <!-- New issue -->
-  <div id="new-issue"
-  class="
-    flex-col
-    bg-white
-    shadow-md
-    px-4
-    sm:px-6
-    md:px-8
-    lg:px-10
-    py-8
-    rounded-3xl
-    w-80
-    max-w-md
-
-    absolute
-    top-1/2
-    left-1/2
-    transform
-    -translate-x-1/2 -translate-y-1/2
-    hidden
-  "
-  >
-    <form action="{{url_for('users.new_issue')}}", method="POST">
-    <div class="font-medium mb-4 self-center text-xl sm:text-3xl text-gray-800">
-      Create a new issue
-    </div>
-    <label for="new-description">Description</label>
-    <textarea id="new-description" required name="description" cols="32" rows="3"></textarea>
-    </textarea>
-
-    <div id="issue-category" class="mb-4 self-center text-xl sm:text-sm text-gray-800">
-      <label for="category" class="mb-4">Select the category</label>
-      <select name="category" id="category">
-        {% for category in categories %}
-        <option value="{{category}}"> {{category}} </option>
-        {% endfor %}
-      </select>
+    <!-- Menu -->
+    <div>
+        <img src="{{url_for('static', filename='src/assets/iconmonstr-menu-5.svg')}}" alt="Menu" id="menu" class="absolute bottom-0 left-0 w-20 h-20 mb-8 ml-6" />
     </div>
 
-    <!-- Botom part of the card -->
-      <button class="btn mt-4"> 
-        Submit
-      </button>
-      <input type="hidden" name="lng" id="lng" />
-      <input type="hidden" name="lat" id="lat" />
-    </form>
-  </div>
+    <!-- Issue card -->
+    <div id="card" class="flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-3xl w-80 max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+        <div id="issue-id" class="font-medium self-center text-xl sm:text-3xl text-gray-800">
+            Here goes id
+        </div>
 
-  <!-- This backdrop functions as a back button -->
-  <div  id="drop">
-  </div>
+        <div id="issue-description" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
+            This is a place for a short description
+        </div>
 
+        <div id="issue-category" class="mt-4 self-center text-xl sm:text-sm text-gray-800">
+            This place is a category
+        </div>
 
+        <!-- Botom part of the card -->
+        <div class="vertical-flex" id="voting">
+            <p id="score"></p>
+
+            <form action="{{url_for('users.score_cast')}}" , method="POST" id="downvote">
+                <a id="downvote-a" href="#">
+                    <img id="downvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-65.svg')}}" alt="" />
+                </a>
+                <input type="hidden" name="issue-id" id="down-issue-id-input" />
+                <input type="hidden" name="score" id="down-score" />
+            </form>
+
+            <form action="{{url_for('users.score_cast')}}" , method="POST" id="upvote">
+                <a id="upvote-a" href="#">
+                    <img id="upvote-svg" class="vote-btn" src="{{url_for('static', filename='src/assets/iconmonstr-arrow-66.svg')}}" alt="" />
+                </a>
+                <input type="hidden" name="issue-id" id="up-issue-id-input" />
+                <input type="hidden" name="score" id="up-score" />
+            </form>
+        </div>
+    </div>
+
+    <!-- Menu card popup -->
+    <div id="menu-screen">
+        <ul id="menu-items">
+            <li><a href="{{url_for('standard.about')}}">About</a></li>
+            <li><a href="{{url_for('users.logout')}}">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- New issue -->
+    <div id="new-issue" class="flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-3xl w-80 max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+        <form action="{{url_for('users.new_issue')}}" , method="POST">
+            <div class="font-medium mb-4 self-center text-xl sm:text-3xl text-gray-800">
+                Create a new issue
+            </div>
+            <label for="new-description">Description</label>
+            <textarea id="new-description" required name="description" cols="32" rows="3"></textarea>
+
+            <div id="issue-category" class="mb-4 self-center text-xl sm:text-sm text-gray-800">
+                <label for="category" class="mb-4">Select the category</label>
+                <select name="category" id="category">
+                    {% for category in categories %}
+                    <option value="{{category}}"> {{category}} </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Botom part of the card -->
+            <button class="btn mt-4">
+                Submit
+            </button>
+            <input type="hidden" name="lng" id="lng" />
+            <input type="hidden" name="lat" id="lat" />
+        </form>
+    </div>
+
+    <!-- This backdrop functions as a back button -->
+    <div id="drop"></div>
 </div>
 
 <!-- JS -->
 <script>
+    init();
+    mapboxgl.accessToken = "{{token}}";
 
-  init();
-  mapboxgl.accessToken = "{{token}}";
+    // Map center is helixSq
+    const helixSq = [-1.6268, 54.9729];
+    const streetMap = "mapbox://styles/mapbox/streets-v11";
 
-  // Map center is helixSq
-  const helixSq = [-1.6268, 54.9729];
-  const streetMap = "mapbox://styles/mapbox/streets-v11";
+    // Transforming issue data from backend
+    const pins = JSON.parse('{{ issues | tojson | safe}}');
+    const card = document.getElementById("card");
 
-  // Transforming issue data from backend
-  const pins = JSON.parse('{{ issues | tojson | safe}}');
-  const card = document.getElementById("card");
+    // Loading the map
+    var map = new mapboxgl.Map({
+        container: "map",
+        style: streetMap,
+        center: helixSq, // starting position [lng, lat]
+        zoom: 15, // starting zoom
+    });
 
-  // Loading the map
-  var map = new mapboxgl.Map({
-    container: "map",
-    style: streetMap,
-    center: helixSq, // starting position [lng, lat]
-    zoom: 15, // starting zoom
-  });
+    // Setup event handlers
+    map.on("style.load", function () {
+        // Adding a new issue
+        map.on("click", function (e) {
+            const coordinates = e.lngLat;
+            const newIssue = document.getElementById("new-issue");
+            const card = document.getElementById("card");
 
-  
-  // Setup event handlers 
-  map.on('style.load', function() {
-    
-    // Adding a new issue
-    map.on('click', function(e) {
-      const coordinates = e.lngLat;
-      const newIssue = document.getElementById("new-issue");
-      const card = document.getElementById("card");
+            if (card.style.display === "none" || card.style.display === "") {
+                newIssueHandler(e);
+            }
+        });
 
-      if (card.style.display === "none" || card.style.display === ""){
-        newIssueHandler(e);
-      }
-    }); 
+        // Pin draw and setup
+        for (let [key, pin] of Object.entries(pins)) {
+            const el = new mapboxgl.Marker({ color: pin.color }).setLngLat([pin.lng, pin.lat]).addTo(map);
 
-    // Pin draw and setup
-    for (let [key, pin] of Object.entries(pins)){
-      const el = new mapboxgl.Marker({ 'color': pin.color })
-        .setLngLat([pin.lng, pin.lat])
-        .addTo(map);
-      
-        // Save the pin data for the element
-        for(let [key, value] of Object.entries(pin)){
-          el.getElement().setAttribute("data-"+ key, value);
+            // Save the pin data for the element
+            for (let [key, value] of Object.entries(pin)) {
+                el.getElement().setAttribute("data-" + key, value);
+            }
+            // Add the event listener
+            el.getElement().addEventListener("click", pinClickHandler);
         }
-        // Add the event listener
-        el.getElement().addEventListener("click", pinClickHandler);
-    }
-
-  });
+    });
 </script>
 
 {% endblock %}

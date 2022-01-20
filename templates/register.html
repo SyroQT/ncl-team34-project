@@ -1,162 +1,130 @@
 {% extends "base.html" %} {% block content %}
 <div id="login" class="relative flex" xmlns="http://www.w3.org/1999/html">
-  <div
-    id="card"
-    class="bg-white shadow-md px-4 py-8 rounded-3xl w-80 max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  >
-    <form action="{{url_for('standard.register')}}" method="post">
-    {{ form.csrf_token() }}
-      <!-- Title  -->
-      <div
-        id="title"
-        class="font-medium self-center text-xl sm:text-3xl text-gray-800"
-      >
-        Create an account
-      </div>
+    <div id="card" class="bg-white shadow-md px-4 py-8 rounded-3xl w-80 max-w-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <form action="{{url_for('standard.register')}}" method="post">
+            {{ form.csrf_token() }}
+            <!-- Title  -->
+            <div id="title" class="font-medium self-center text-xl sm:text-3xl text-gray-800">
+                Create an account
+            </div>
 
-      <!-- First Name -->
-      <div class="mb-4 mt-4">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="first-name"
-        >
-          First Name
-        </label>
+            <!-- First Name -->
+            <div class="mb-4 mt-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="first-name">
+                    First Name
+                </label>
 
+                {{ form.firstname(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="First Name") }} {% for error in
+                form.firstname.errors %} {{ error }} {% endfor %}
+            </div>
 
-          {{ form.firstname(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="First Name") }}
-            {% for error in form.firstname.errors %}
-                {{ error }}
-            {% endfor %}
+            <!-- Last name -->
+            <div class="mb-4 mt-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="last-name">
+                    Last name
+                </label>
 
-      </div>
+                {{ form.lastname(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Lastname") }} {% for error in
+                form.lastname.errors %} {{ error }} {% endfor %}
+            </div>
 
-      <!-- Last name -->
-      <div class="mb-4 mt-4">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="last-name"
-        >
-          Last name
-        </label>
+            <!-- Email -->
+            <div class="mb-4 mt-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                    Email
+                </label>
+                {{ form.email(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Email") }} {% for error in form.email.errors %} {{
+                error }} {% endfor %}
+            </div>
 
-         {{ form.lastname(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Lastname") }}
-            {% for error in form.lastname.errors %}
-                {{ error }}
-            {% endfor %}
-      </div>
+            <!-- Phone -->
+            <div class="mb-4 mt-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
+                    Phone number
+                </label>
+                {{ form.phone(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="+44...") }} {% for error in form.phone.errors %} {{
+                error }} {% endfor %}
+            </div>
 
-      <!-- Email -->
-      <div class="mb-4 mt-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-          Email
-        </label>
-         {{ form.email(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Email") }}
-            {% for error in form.email.errors %}
-                {{ error }}
-            {% endfor %}
-      </div>
+            <!-- Password -->
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                    Password
+                </label>
+                {{ form.password(type="password", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Password") }} {% for error in
+                form.password.errors %} {{ error }} {% endfor %}
+            </div>
 
-      <!-- Phone -->
-      <div class="mb-4 mt-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
-          Phone number
-        </label>
-        {{ form.phone(type="text", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="+44...") }}
-            {% for error in form.phone.errors %}
-                {{ error }}
-            {% endfor %}
-      </div>
+            <!-- Confirm password -->
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password-confirm">
+                    Password
+                </label>
+                {{ form.password_confirm(type="password", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Repeat Password") }} {% for error in
+                form.password_confirm.errors %} {{ error }} {% endfor %}
+            </div>
 
-      <!-- Password -->
-      <div class="mb-6">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="password"
-        >
-          Password
-        </label>
-        {{ form.password(type="password", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Password") }}
-            {% for error in form.password.errors %}
-                {{ error }}
-            {% endfor %}
-      </div>
-
-      <!-- Confirm password -->
-      <div class="mb-6">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="password-confirm"
-        >
-          Password
-        </label>
-        {{ form.password_confirm(type="password", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Repeat Password") }}
-            {% for error in form.password_confirm.errors %}
-                {{ error }}
-            {% endfor %}
-      </div>
-
-      <!-- Bottom part -->
-      <div class="flex flex-row justify-around">
-<button class="next-btn" type="submit">Next</button>
-        {% if errors %}
-        <p class="mt-5 text-red-800"><b>{{errors}}</b></p>
-        {% endif %}
-      </div>
-    </form>
-  </div>
+            <!-- Bottom part -->
+            <div class="flex flex-row justify-around">
+                <button class="next-btn" type="submit">Next</button>
+                {% if errors %}
+                <p class="mt-5 text-red-800"><b>{{errors}}</b></p>
+                {% endif %}
+            </div>
+        </form>
+    </div>
 </div>
 
 <style>
-  body {
-    background-color: #264653;
-  }
-  #login {
-    height: 100vh;
-  }
+    body {
+        background-color: #264653;
+    }
+    #login {
+        height: 100vh;
+    }
 
-  button,
-  a {
-    border-radius: 28px;
-    display: inline-block;
-    cursor: pointer;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 17px;
-    padding: 16px 31px;
-    text-decoration: none;
-  }
+    button,
+    a {
+        border-radius: 28px;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 17px;
+        padding: 16px 31px;
+        text-decoration: none;
+    }
 
-  button:hover {
-    background-color: #3cc7b7;
-  }
-  a:hover {
-    background-color: #facb53;
-  }
+    button:hover {
+        background-color: #3cc7b7;
+    }
+    a:hover {
+        background-color: #facb53;
+    }
 
-  button:active,
-  a:active {
-    position: relative;
-    top: 1px;
-  }
+    button:active,
+    a:active {
+        position: relative;
+        top: 1px;
+    }
 
-  button {
-    background-color: #2a9d8f;
-    border: 1px solid #10695f;
-  }
+    button {
+        background-color: #2a9d8f;
+        border: 1px solid #10695f;
+    }
 
-  a {
-    background-color: #dbb145;
-    border: 1px solid #b9922d;
-  }
+    a {
+        background-color: #dbb145;
+        border: 1px solid #b9922d;
+    }
 
-  .next-btn {
-    padding: 1rem 4rem;
-    font-size: 1.5rem;
-  }
+    .next-btn {
+        padding: 1rem 4rem;
+        font-size: 1.5rem;
+    }
 
-  input:focus {
-    background-color: #5fd3c570;
-  }
+    input:focus {
+        background-color: #5fd3c570;
+    }
 </style>
 {% endblock %}

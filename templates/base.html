@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+        <!-- Tailwind CSS setup -->
+        <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}" />
+        <!-- Mabox API setup -->
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" />
 
-    <!-- Tailwind CSS setup -->
-    <link
-      rel="stylesheet"
-      href="{{url_for('static',filename='css/main.css')}}"
-    />
-    <!-- Mabox API setup -->
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
+        <!-- Maps API -->
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+        <title>Whinge</title>
+    </head>
 
-    <!-- Maps API -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
-    <title>Project</title>
-  </head>
-
-  <body>
-    {% block content %} {% endblock %}
-  </body>
+    <body>
+        {% block content %} {% endblock %}
+    </body>
 </html>
-

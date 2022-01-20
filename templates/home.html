@@ -1,122 +1,138 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Home Sec</title>
-    <meta charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600">
-    <meta name="viewport" content="width=device-width, intial-scale=1.0">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="css/stlye.css") }}>
-</head>
-<style>
-    @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" />
+    <meta name="viewport" content="width=device-width, intial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/stlye.css') }}"
+    />
+  </head>
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Work+Sans:400,600");
     body {
-	margin: 0;
-	background: #222;
-	font-family: 'Work Sans', sans-serif;
-	font-weight: 800;
+      margin: 0;
+      background: #222;
+      font-family: "Work Sans", sans-serif;
+      font-weight: 800;
+    }
 
+    .container {
+      width: 80%;
+      margin: 0 auto;
+    }
+    header {
+      background: #264653;
+      height: 20vh;
+    }
+    header::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .logo {
+      float: left;
+      padding: 1px 530px;
+      height: 100px;
+    }
 
-}
+    nav {
+      float: right;
+    }
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
 
-.container {
-	width: 80%;
-	margin: 0 auto;
+    nav li {
+      display: inline-block;
+      margin-left: 100px;
+      padding-top: 23px;
+      right: 160px;
+      position: relative;
+    }
+    nav a {
+      color: #f4a261;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+    nav a:hover {
+      color: #000;
+    }
 
-}
-header {
-  background: #55d6aa;
-    height: 20vh;
-}
-header::after {
-  content: '';
-  display: table;
-  clear: both;
-}
-.logo {
-  float: left;
-  padding: 1px 530px;
-  height: 100px;
+    nav a::before {
+      content: "";
+      display: block;
+      height: 5px;
+      background-color: #e76f51;
 
-}
+      position: absolute;
+      top: 0;
+      width: 0;
 
-nav {
-  float: right;
+      transition: all ease-in-out 250ms;
+    }
 
-}
-nav ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+    nav a:hover::before {
+      width: 100%;
+    }
+    .map {
+      height: 80vh;
+      width: 100%;
+    }
+  </style>
+  <body>
+    <header>
+      <div class="container">
+        <img src="../static/images/logo.png" alt="logo" class="logo" />
 
-nav li {
-  display: inline-block;
-  margin-left: 100px;
-  padding-top: 23px;
-  right: 160px;
-  position: relative;
-}
-nav a {
-  color: #444;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 14px;
-}
-nav a:hover {
-  color: #000;
-}
-
-nav a::before {
-  content: '';
-  display: block;
-  height: 5px;
-  background-color: #444;
-
-  position: absolute;
-  top: 0;
-  width: 0;
-
-  transition: all ease-in-out 250ms;
-}
-
-nav a:hover::before {
-  width: 100%;
-}
-.map{
-    height: 80vh;
-    width: 100%;
-}
-
-</style>
-<body>
-<header>
-    <div class="container">
-
-    <img src="../static/images/logo.png" alt="logo" class="logo">
-
-    <nav class="navbar">
-        <ul>
-            <li><a href="{{ url_for('standard.index') }}" class="navbar-item">Home</a> </li>
-            <li><a href="{{ url_for('standard.register') }}" class="navbar-item">Register</a> </li>
-            <li><a href="{{ url_for('users.login') }}" class="navbar-item">Login</a> </li>
-            <li><a href="{{ url_for('users.user') }}" class="navbar-item">Map</a> </li>
-            <li><a href="{{ url_for('standard.about') }}" class="navbar-item">About Us</a> </li>
-            <li><a href="{{ url_for('users.logout') }}" class="navbar-item">Logout</a> </li>
-        </ul>
-    </nav>
-
-
+        <nav class="navbar">
+          <ul>
+            <li>
+              <a href="{{ url_for('standard.index') }}" class="navbar-item"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('standard.register') }}" class="navbar-item"
+                >Register</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('users.login') }}" class="navbar-item"
+                >Login</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('users.user') }}" class="navbar-item">Map</a>
+            </li>
+            <li>
+              <a href="{{ url_for('standard.about') }}" class="navbar-item"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('users.logout') }}" class="navbar-item"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="image-section">
+      <img src="/static/images/map.png" alt="map" class="map" />
     </div>
-</header>
-         <div class="image-section">
-             <img src="/static/images/map.png" alt="map" class="map">
-         </div>
-
-
-
-
-
-
-</body>
+  </body>
 </html>
