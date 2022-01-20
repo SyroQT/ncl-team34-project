@@ -4,7 +4,7 @@ from time import sleep
 from logging import raiseExceptions
 
 from firebase_admin import auth, db
-from flask import session
+from flask import session, render_template
 
 """
 Decorator file:
@@ -24,7 +24,7 @@ def requires_roles(role=None):
             try:
                 sleep(0.05)
                 verif = auth.verify_id_token(json.loads(session["idToken"]))
-            except TypeError:
+            except:
                 verif = {}
             if "uid" in verif.keys():
                 try:
@@ -45,11 +45,11 @@ def requires_roles(role=None):
                 except:
                     # TODO: create the template
                     # return render_template("403.html")
-                    return "Unauthorized 1"
+                    return render_template("403.html")
             else:
                 # TODO: create the template
                 # return render_template("403.html")
-                return "Unauthorized 2"
+                return render_template("403.html")
 
         return wrapped
 
